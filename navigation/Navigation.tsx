@@ -1,0 +1,40 @@
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import Login from "../screens/Login";
+import Exercise from "../screens/Exercise";
+import Record from "../screens/Record";
+import Rank from "../screens/Rank";
+import KakaoLogin from "../components/KakaoLogin";
+
+const Stack = createStackNavigator();
+const BottomTab = createBottomTabNavigator();
+
+function StackScreen() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="KakaoLogin" component={KakaoLogin} />
+    </Stack.Navigator>
+  );
+}
+
+function BottomStack() {
+  return (
+    <BottomTab.Navigator>
+      <BottomTab.Screen name="Exercise" component={Exercise} />
+      <BottomTab.Screen name="Record" component={Record} />
+      <BottomTab.Screen name="Rank" component={Rank} />
+    </BottomTab.Navigator>
+  );
+}
+
+export default function Navigation() {
+  return (
+    <NavigationContainer>
+      <StackScreen />
+    </NavigationContainer>
+  );
+}
