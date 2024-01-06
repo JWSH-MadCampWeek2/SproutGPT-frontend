@@ -12,29 +12,24 @@ import KakaoLogin from "../components/KakaoLogin";
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
 
-function StackScreen() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="KakaoLogin" component={KakaoLogin} />
-    </Stack.Navigator>
-  );
-}
+// export function StackScreen() {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator>
+//         <Stack.Screen name="Login" component={Login} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// }
 
-function BottomStack() {
-  return (
-    <BottomTab.Navigator>
-      <BottomTab.Screen name="Exercise" component={Exercise} />
-      <BottomTab.Screen name="Record" component={Record} />
-      <BottomTab.Screen name="Rank" component={Rank} />
-    </BottomTab.Navigator>
-  );
-}
-
-export default function Navigation() {
+export function BottomStack() {
   return (
     <NavigationContainer>
-      <StackScreen />
+      <BottomTab.Navigator>
+        <BottomTab.Screen name="Exercise" component={Exercise} />
+        <BottomTab.Screen name="Record" component={Record} />
+        <BottomTab.Screen name="Rank" component={Rank} />
+      </BottomTab.Navigator>
     </NavigationContainer>
   );
 }
