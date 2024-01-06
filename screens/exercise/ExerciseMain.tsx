@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Record() {
+export default function ExerciseMain() {
   return (
     <View style={Styles.container}>
-      <Text style={Styles.HomeText}>This is Record Page</Text>
+      <Text style={Styles.HomeText}>This is Exercise Page</Text>
     </View>
   );
 }
@@ -13,7 +13,6 @@ const Styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
   },
   HomeText: {
     fontSize: 30,

@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Exercise() {
+export default function RankMain() {
   return (
     <View style={Styles.container}>
-      <Text style={Styles.HomeText}>This is Exercise Page</Text>
+      <Text style={Styles.HomeText}>This is Rank Page</Text>
     </View>
   );
 }

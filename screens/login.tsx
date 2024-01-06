@@ -5,27 +5,41 @@ import { useNavigation } from "@react-navigation/native";
 import KakaoLogin from "../components/KakaoLogin";
 import { localPort } from "../utils/constants";
 
-export default function Login({
-  setIsLoggedIn,
-}: {
-  setIsLoggedIn: () => void;
-}) {
-  // const navigation = useNavigation();
-  const [tryLogin, setTryLogin] = useState(false);
+async function fetchUserInfo(
+  userData: { authorization_code: string },
+  loginSuccess: () => void
+) {
+  // const [isSignedUp, setIsSignedUp] = useState(false);
+  await fetch(`${localPort}/oauth`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Received data:", data); // TODO: 회원 가입 여부 붙여서 받기
+      // setIsSignedUp(data.isSignedUp);
+    })
+    .then(() => {
+      loginSuccess();
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  // return isSignedUp;
+}
+
+export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
+  const [tryAuth, setTryAuth] = useState(false);
   const onSuccess = (requestCode: string) => {
-    setTryLogin(false);
     console.log(requestCode);
     const userData = {
-      code: requestCode,
+      authorization_code: requestCode,
     };
-
-    fetch(`${localPort}/`, {
-      method: "POST",
-      headers: {},
-      body: JSON.stringify(userData),
-    }).then((res) => {
-      console.log(res);
-    });
+    fetchUserInfo(userData, loginSuccess);
+    setTryAuth(false);
   };
 
   return (
@@ -34,12 +48,11 @@ export default function Login({
       <Button
         title="Kakao로 로그인하기"
         onPress={() => {
-          setTryLogin(true);
-          setIsLoggedIn();
+          setTryAuth(true);
         }}
       />
-      <Modal visible={tryLogin}>
-        <KakaoLogin onSuccess={onSuccess} />
+      <Modal visible={tryAuth}>
+        <KakaoLogin onAuthSuccess={onSuccess} />
       </Modal>
     </View>
   );

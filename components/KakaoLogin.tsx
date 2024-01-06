@@ -7,49 +7,26 @@ const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from
 
 // parse url from webview
 function getCode(target: string): string {
-  console.log(`getCode target: ${target}`);
   const exp = "code=";
   const condition = target.indexOf(exp);
   if (condition !== -1) {
     const requestCode = target.substring(condition + exp.length);
-    // requestToken(requestCode);
-    console.log(requestCode);
+    console.log(`requestCode !!!!!! ${requestCode}`);
     return requestCode;
   }
   return "";
 }
 
-// const requestToken = async (code: string) => {
-//   console.log(`requestToken code: ${code}`);
-//   const requestTokenUrl = "https://kauth.kakao.com/oauth/token";
-
-//   const options = qs.stringify({
-//     grant_type: "authorization_code",
-//     client_id: REST_API_KEY,
-//     redirect_uri: REDIRECT_URI,
-//     code,
-//   });
-
-//   try {
-//     const tokenResponse = await axios.post(requestTokenUrl, options);
-//     const ACCESS_TOKEN = tokenResponse.data.access_token;
-
-//     const body = {
-//       ACCESS_TOKEN,
-//     };
-//     const response = await axios.post(REDIRECT_URI, body);
-//     const value = response.data;
-//     console.log(`response: ${response}`);
-//     console.log(`value: ${value}`);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
+async function onMessage(event: any, onAuthSuccess: (code: string) => void) {
+  const data = event.nativeEvent["url"];
+  const requestCode = await getCode(data);
+  onAuthSuccess(requestCode);
+}
 
 export default function KakaoLogin({
-  onSuccess,
+  onAuthSuccess,
 }: {
-  onSuccess: (code: string) => void;
+  onAuthSuccess: (code: string) => void;
 }) {
   return (
     <View style={{ flex: 1 }}>
@@ -60,11 +37,7 @@ export default function KakaoLogin({
         }}
         injectedJavaScript={INJECTED_JAVASCRIPT}
         javaScriptEnabled
-        onMessage={(event) => {
-          const data = event.nativeEvent["url"];
-          const requestCode = getCode(data);
-          onSuccess(requestCode);
-        }}
+        onMessage={(event) => onMessage(event, onAuthSuccess)}
       />
     </View>
   );
