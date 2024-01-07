@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { ButtonGroup, Button } from "@rneui/themed";
 import { NextBtn } from "../../components/info/InfoBtn";
+import { TabRouter } from "@react-navigation/native";
 
-export default function InfoGender({ navigation }: { navigation: any }) {
+export default function InfoLevel({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [gender, setGender] = useState("남자");
-  const genderList = ["남자", "여자"];
+  const [level, setLevel] = useState("초급자");
+  const levelList = ["초급자", "중급자"];
 
   return (
     <>
@@ -19,19 +26,19 @@ export default function InfoGender({ navigation }: { navigation: any }) {
         성별을 입력해주세요
       </Text>
       <ButtonGroup
-        buttons={genderList}
+        buttons={["초급자", "중급자"]}
         selectedIndex={selectedIndex}
         containerStyle={{ margin: 16 }}
         onPress={(value) => {
           setSelectedIndex(value);
-          setGender(genderList[value]);
+          setLevel(levelList[value]);
         }}
       />
       <NextBtn
         onPress={() =>
-          navigation.navigate("InfoAge" as never, {
-            user_id: "3258378056",
-            gender: gender,
+          navigation.navigate("InfoTarget" as never, {
+            difficulty: level,
+            ...route.params,
           })
         }
       />

@@ -1,13 +1,39 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
-import { Input, Button, ButtonGroup } from "@rneui/themed";
+import { Button, ButtonGroup } from "@rneui/themed";
+import { NextBtn } from "../../components/info/InfoBtn";
+import { localPort } from "../../utils/constants";
+
+async function sendUserInfo(userInfo: {
+  user_id: string;
+  gender: string;
+  age: string;
+  height: string;
+  weight: string;
+}) {
+  console.log(userInfo);
+  // await fetch(`${localPort}/info`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(userInfo),
+  // })
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log("Received data:", data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error);
+  //   });
+}
 
 export default function InfoBody({
-  route,
   navigation,
+  route,
 }: {
-  route: any;
   navigation: any;
+  route: any;
 }) {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
@@ -33,16 +59,17 @@ export default function InfoBody({
         />
         <Text>kg</Text>
       </View>
-      <Button
-        title={"다음으로"}
-        type="outline"
-        style={{ margin: 16 }}
+      <NextBtn
         onPress={() =>
-          navigation.navigate("InfoPurpose" as never, {
-            height: height,
-            weight: weight,
-            ...route.params,
-          })
+          // TODO: send user personal info to backend
+          {
+            sendUserInfo({
+              ...route.params,
+            });
+            navigation.navigate("InfoLevel" as never, {
+              user_id: route.params.user_id,
+            });
+          }
         }
       />
     </>

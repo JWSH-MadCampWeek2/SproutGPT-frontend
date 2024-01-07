@@ -9,7 +9,11 @@ import RankMain from "../screens/rank/RankMain";
 import InfoGender from "../screens/info/InfoGender";
 import InfoBody from "../screens/info/InfoBody";
 import InfoAge from "../screens/info/InfoAge";
-import InfoPurpose from "../screens/info/InfoPurpose";
+import InfoGoal from "../screens/info/InfoGoal";
+import InfoLevel from "../screens/info/InfoLevel";
+import InfoTarget from "../screens/info/InfoTarget";
+import InfoLoad from "../screens/info/InfoLoad";
+import Setting from "../screens/exercise/Setting";
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -21,7 +25,12 @@ export function InfoStack() {
         <Stack.Screen name="InfoGender" component={InfoGender} />
         <Stack.Screen name="InfoAge" component={InfoAge} />
         <Stack.Screen name="InfoBody" component={InfoBody} />
-        <Stack.Screen name="InfoPurpose" component={InfoPurpose} />
+
+        <Stack.Screen name="InfoLevel" component={InfoLevel} />
+        <Stack.Screen name="InfoTarget" component={InfoTarget} />
+        <Stack.Screen name="InfoGoal" component={InfoGoal} />
+        <Stack.Screen name="InfoLoad" component={InfoLoad} />
+
         <Stack.Screen name="BottomStack" component={BottomStack} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -35,5 +44,14 @@ export function BottomStack() {
       <BottomTab.Screen name="RecordMain" component={RecordMain} />
       <BottomTab.Screen name="RankMain" component={RankMain} />
     </BottomTab.Navigator>
+  );
+}
+
+export function ExerciseStack() {
+  return (
+    <Stack.Navigator initialRouteName="ExerciseMain">
+      <Stack.Screen name="ExerciseMain" component={ExerciseMain} />
+      <Stack.Screen name="Setting" component={Setting} />
+    </Stack.Navigator>
   );
 }

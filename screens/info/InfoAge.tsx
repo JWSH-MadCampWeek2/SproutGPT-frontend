@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
-import { Input, Button } from "@rneui/themed";
+import { Text, StyleSheet, TextInput } from "react-native";
+import { NextBtn } from "../../components/info/InfoBtn";
 
 export default function InfoAge({
-  route,
   navigation,
+  route,
 }: {
-  route: any;
   navigation: any;
+  route: any;
 }) {
   const [age, setAge] = useState("");
-  // console.log(`route params: ${route.params.gender}`);
   return (
     <>
       <Text style={Styles.HomeText}>나이를 입력해주세요</Text>
@@ -21,10 +20,7 @@ export default function InfoAge({
         onChangeText={setAge}
       />
       <Text>세</Text>
-      <Button
-        title={"다음으로"}
-        type="outline"
-        style={{ margin: 16 }}
+      <NextBtn
         onPress={() =>
           navigation.navigate("InfoBody" as never, {
             age: age,

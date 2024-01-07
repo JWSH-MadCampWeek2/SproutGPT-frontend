@@ -9,17 +9,21 @@ const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from
 function getCode(target: string): string {
   const exp = "code=";
   const condition = target.indexOf(exp);
+  console.log(`KakaoLogin_targetOfGetCode: ${target}`);
   if (condition !== -1) {
     const requestCode = target.substring(condition + exp.length);
     console.log(`requestCode !!!!!! ${requestCode}`);
     return requestCode;
+  } else {
+    console.log("condition was -1");
+    return "";
   }
-  return "";
 }
 
 async function onMessage(event: any, onAuthSuccess: (code: string) => void) {
   const data = event.nativeEvent["url"];
   const requestCode = await getCode(data);
+  console.log(`KakaoLogin_requestCode: ${requestCode}`);
   onAuthSuccess(requestCode);
 }
 

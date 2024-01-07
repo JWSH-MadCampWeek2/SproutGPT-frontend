@@ -34,7 +34,7 @@ async function fetchUserInfo(
 export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
   const [tryAuth, setTryAuth] = useState(false);
   const onSuccess = (requestCode: string) => {
-    console.log(requestCode);
+    console.log(`Login_requestCode: ${requestCode}`);
     const userData = {
       authorization_code: requestCode,
     };
