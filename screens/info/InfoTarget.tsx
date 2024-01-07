@@ -12,7 +12,7 @@ export default function InfoTarget({
 }) {
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const [target, setTarget] = useState<string[]>([]);
-  const targetList = ["등", "어깨", "복근", "하체", "팔"];
+  const targetList = ["등", "어깨", "복근", "하체", "팔", "상관 없음"];
 
   return (
     <>

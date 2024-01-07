@@ -23,7 +23,7 @@ export default function InfoLevel({
           textAlign: "center",
         }}
       >
-        성별을 입력해주세요
+        운동 수준이 어떻게 되시나요?
       </Text>
       <ButtonGroup
         buttons={["초급자", "중급자"]}

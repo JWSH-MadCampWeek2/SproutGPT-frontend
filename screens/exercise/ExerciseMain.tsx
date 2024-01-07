@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  Button,
-} from "react-native";
-import { CheckBox } from "react-native-elements";
+import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
+import { CheckBox, Button } from "react-native-elements";
 import styled, { css } from "styled-components/native";
 import ExerciseItem from "../../components/exercise/ExerciseItem";
 import Greeting from "../../components/exercise/Greeting";
@@ -20,11 +13,12 @@ const DATA = [
   { id: "4", name: "푸시업", description: "코어 근육의 발달에 좋습니다." },
 ];
 
-export default function ExerciseMain() {
+export default function ExerciseMain({ navigation }: { navigation: any }) {
   // TODO: isChecked, order 관리 via state
   return (
     <SafeAreaView style={styles.container}>
-      <Greeting userName="시현" />
+      <Greeting userName="시현" navigation={navigation} />
+      <Button title="오운완!" type="outline" />
       <FlatList
         data={DATA}
         renderItem={({ item }) => <ExerciseItem exerciseItem={item} />}

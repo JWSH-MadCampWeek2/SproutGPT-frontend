@@ -11,35 +11,35 @@ async function sendUserGoal(userInfo: {
   exercise_goal: string;
 }) {
   console.log(userInfo);
-  //   await fetch(`${localPort}/goal`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(userInfo),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Received data:", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
+  await fetch(`${localPort}/goal`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userInfo),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Received data:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 
-  //   await fetch(`${localPort}/recommend`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ user_id: userInfo.user_id }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Received recommenddata:", data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error);
-  //     });
+  await fetch(`${localPort}/recommend`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user_id: "3258378056" }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Received recommenddata:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
 }
 
 export default function InfoGoal({

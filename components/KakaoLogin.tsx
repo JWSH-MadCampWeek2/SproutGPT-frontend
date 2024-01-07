@@ -20,11 +20,27 @@ function getCode(target: string): string {
   }
 }
 
+// async function onMessage(event: any, onAuthSuccess: (code: string) => void) {
+//   const data = event.nativeEvent["url"];
+//   const requestCode = await getCode(data);
+//   console.log(`KakaoLogin_requestCode: ${requestCode}`);
+//   onAuthSuccess(requestCode);
+// }
 async function onMessage(event: any, onAuthSuccess: (code: string) => void) {
-  const data = event.nativeEvent["url"];
-  const requestCode = await getCode(data);
-  console.log(`KakaoLogin_requestCode: ${requestCode}`);
-  onAuthSuccess(requestCode);
+  const url = event.nativeEvent.url;
+
+  // Check if the URL is the redirect URI
+  if (url.startsWith(REDIRECT_URI)) {
+    const requestCode = await getCode(url);
+    if (requestCode) {
+      console.log(`Authorization Code: ${requestCode}`);
+      onAuthSuccess(requestCode);
+    } else {
+      console.log("No authorization code found in the URL");
+    }
+  } else {
+    console.log("Waiting for the correct redirect...");
+  }
 }
 
 export default function KakaoLogin({

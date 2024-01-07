@@ -13,9 +13,16 @@ function SettingsButton({ onPress }: { onPress: () => void }) {
   );
 }
 
-function Greeting({ userName }: { userName: string }) {
+function Greeting({
+  userName,
+  navigation,
+}: {
+  userName: string;
+  navigation: any;
+}) {
   const onSetting = () => {
     console.log("setting clicked");
+    navigation.navigate("Setting");
   };
   return (
     <StyledGreetingContainer>
