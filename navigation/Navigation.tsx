@@ -30,12 +30,10 @@ export function InfoStack() {
 
 export function BottomStack() {
   return (
-    <NavigationContainer>
-      <BottomTab.Navigator initialRouteName="ExerciseMain">
-        <BottomTab.Screen name="ExerciseMain" component={ExerciseMain} />
-        <BottomTab.Screen name="RecordMain" component={RecordMain} />
-        <BottomTab.Screen name="RankMain" component={RankMain} />
-      </BottomTab.Navigator>
-    </NavigationContainer>
+    <BottomTab.Navigator initialRouteName="ExerciseMain">
+      <BottomTab.Screen name="ExerciseMain" component={ExerciseMain} />
+      <BottomTab.Screen name="RecordMain" component={RecordMain} />
+      <BottomTab.Screen name="RankMain" component={RankMain} />
+    </BottomTab.Navigator>
   );
 }

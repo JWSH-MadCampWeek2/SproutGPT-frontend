@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Text, View, Button, StyleSheet, Modal } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import KakaoLogin from "../components/KakaoLogin";
 import { localPort } from "../utils/constants";
@@ -19,7 +18,8 @@ async function fetchUserInfo(
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Received data:", data); // TODO: 회원 가입 여부 붙여서 받기
+      console.log("Received data:", data); // TODO 1: 회원 가입 여부 붙여서 받기
+      // TODO 2: parse userId and set userId of App
       // setIsSignedUp(data.isSignedUp);
     })
     .then(() => {

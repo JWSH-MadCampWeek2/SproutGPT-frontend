@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { Input, Button, ButtonGroup } from "@rneui/themed";
-import { BottomStack } from "../../navigation/Navigation";
+import { Text, StyleSheet } from "react-native";
+import { Button, ButtonGroup } from "@rneui/themed";
 import { localPort } from "../../utils/constants";
-import { TabRouter } from "@react-navigation/native";
 
 async function sendUserInfo(userInfo: {
   user_id: string;
@@ -23,7 +21,7 @@ async function sendUserInfo(userInfo: {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Received data:", data); // TODO: 회원 가입 여부 붙여서 받기
+      console.log("Received data:", data);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -37,7 +35,7 @@ export default function InfoPurpose({
   route: any;
   navigation: any;
 }) {
-  const [selectedIndexes, setSelectedIndexes] = useState([]);
+  const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const [purposes, setPurposes] = useState<string[]>([]);
   const purposeList = [
     "다이어트",
@@ -59,7 +57,10 @@ export default function InfoPurpose({
         selectedIndexes={selectedIndexes}
         onPress={(value) => {
           setSelectedIndexes(value);
-          setPurposes([...purposes, purposeList[value]]);
+          const selectedPurposes = value.map(
+            (index: number) => purposeList[index]
+          );
+          setPurposes(selectedPurposes);
         }}
         containerStyle={{ marginBottom: 20 }}
       />
@@ -67,13 +68,14 @@ export default function InfoPurpose({
         title={"다음으로"}
         type="outline"
         style={{ margin: 16 }}
-        onPress={() =>
+        onPress={() => {
           sendUserInfo({
             user_id: "3258378056",
             exercise_goal: purposes,
             ...route.params,
-          })
-        }
+          });
+          navigation.navigate("BottomStack");
+        }}
       />
     </>
   );
