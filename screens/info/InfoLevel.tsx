@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { ButtonGroup, Button } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { NextBtn } from "../../components/info/InfoBtn";
-import { TabRouter } from "@react-navigation/native";
 
 export default function InfoLevel({
   navigation,
@@ -14,6 +15,10 @@ export default function InfoLevel({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [level, setLevel] = useState("초급자");
   const levelList = ["초급자", "중급자"];
+
+  const handleSubmit = async () => {
+    await AsyncStorage.setItem("user_level", level);
+  };
 
   return (
     <>
@@ -35,12 +40,13 @@ export default function InfoLevel({
         }}
       />
       <NextBtn
-        onPress={() =>
+        onPress={() => {
+          handleSubmit();
           navigation.navigate("InfoTarget" as never, {
             difficulty: level,
             ...route.params,
-          })
-        }
+          });
+        }}
       />
     </>
   );

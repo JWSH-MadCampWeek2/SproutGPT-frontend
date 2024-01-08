@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TextInput } from "react-native";
 import { ButtonGroup, Button } from "@rneui/themed";
 import { ConfirmBtn } from "../../components/info/InfoBtn";
 
-function Setting({ navigation }: { navigation: any }) {
+function Setting({ onSettingComplete }: { onSettingComplete: () => void }) {
   // gender
   const genderList = ["남자", "여자"];
   const [selectedGender, setSelectedGender] = useState(0);
@@ -68,11 +68,7 @@ function Setting({ navigation }: { navigation: any }) {
           <Text>kg</Text>
         </View>
       </>
-      <ConfirmBtn
-        onPress={() => {
-          navigation.navigate("ExerciseMain");
-        }}
-      />
+      <ConfirmBtn onPress={onSettingComplete} />
     </>
   );
 }

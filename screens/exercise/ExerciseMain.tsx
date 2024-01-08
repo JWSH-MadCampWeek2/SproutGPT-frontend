@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
 import { CheckBox, Button } from "react-native-elements";
 import styled, { css } from "styled-components/native";
@@ -15,9 +16,24 @@ const DATA = [
 
 export default function ExerciseMain({ navigation }: { navigation: any }) {
   // TODO: isChecked, order 관리 via state
+  const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    const getData = async () => {
+      const userIdVal = await AsyncStorage.getItem("user_id");
+      const userNameVal = await AsyncStorage.getItem("user_name");
+      if (userIdVal) {
+        setUserId(JSON.parse(userIdVal));
+      }
+      if (userNameVal) {
+        setUserName(JSON.parse(userNameVal));
+      }
+    };
+    getData();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
-      <Greeting userName="시현" navigation={navigation} />
+      <Greeting userName={userName} navigation={navigation} />
       <Button title="오운완!" type="outline" />
       <FlatList
         data={DATA}

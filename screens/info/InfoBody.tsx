@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
-import { Button, ButtonGroup } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NextBtn } from "../../components/info/InfoBtn";
 import { localPort } from "../../utils/constants";
 
@@ -37,6 +37,10 @@ export default function InfoBody({
 }) {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
+  const handleSubmit = async () => {
+    await AsyncStorage.setItem("user_height", height);
+    await AsyncStorage.setItem("user_weight", weight);
+  };
 
   return (
     <>
@@ -60,17 +64,15 @@ export default function InfoBody({
         <Text>kg</Text>
       </View>
       <NextBtn
-        onPress={() =>
-          // TODO: send user personal info to backend
-          {
-            sendUserInfo({
-              ...route.params,
-            });
-            navigation.navigate("InfoLevel" as never, {
-              user_id: route.params.user_id,
-            });
-          }
-        }
+        onPress={() => {
+          sendUserInfo({
+            ...route.params,
+          });
+          handleSubmit();
+          navigation.navigate("InfoLevel" as never, {
+            user_id: route.params.user_id,
+          });
+        }}
       />
     </>
   );

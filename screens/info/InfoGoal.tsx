@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import { ButtonGroup } from "@rneui/themed";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { localPort } from "../../utils/constants";
 import { StartBtn } from "../../components/info/InfoBtn";
 
@@ -35,7 +37,7 @@ async function sendUserGoal(userInfo: {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Received recommenddata:", data);
+      console.log("Received recommend data:", data);
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -52,6 +54,9 @@ export default function InfoGoal({
   const [selectedIndex, setSelectedIndex] = useState<number>();
   const [goal, setGoal] = useState<string>("");
   const goalList = ["근육 증가", "체지방 감소", "현재 상태 유지"];
+  const handleSubmit = async () => {
+    await AsyncStorage.setItem("user_id", goal);
+  };
 
   return (
     <>
@@ -68,6 +73,7 @@ export default function InfoGoal({
       />
       <StartBtn
         onPress={() => {
+          handleSubmit();
           sendUserGoal({
             exercise_goal: goal,
             ...route.params,

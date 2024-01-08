@@ -1,7 +1,8 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Modal } from "react-native";
 import styled from "styled-components/native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Setting from "../../screens/exercise/Setting";
 
 function SettingsButton({ onPress }: { onPress: () => void }) {
   return (
@@ -20,14 +21,21 @@ function Greeting({
   userName: string;
   navigation: any;
 }) {
+  const [isSetting, setIsSetting] = useState(false);
   const onSetting = () => {
     console.log("setting clicked");
-    navigation.navigate("Setting");
+    setIsSetting(true);
+  };
+  const onSettingComplete = () => {
+    setIsSetting(false);
   };
   return (
     <StyledGreetingContainer>
       <StyledGreeting>안녕하세요 {userName} 님!</StyledGreeting>
       <SettingsButton onPress={onSetting} />
+      <Modal visible={isSetting}>
+        <Setting onSettingComplete={onSettingComplete} />
+      </Modal>
     </StyledGreetingContainer>
   );
 }
