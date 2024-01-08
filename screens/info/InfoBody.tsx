@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styled from "styled-components/native";
+
 import { NextBtn } from "../../components/info/InfoBtn";
 import { localPort } from "../../utils/constants";
 
@@ -44,29 +46,36 @@ export default function InfoBody({
 
   return (
     <>
-      <Text style={Styles.HomeText}>키와 몸무게를 입력해주세요</Text>
-      <View>
-        <TextInput
-          placeholder="키를 입력해주세요"
-          keyboardType="numeric"
-          value={height}
-          onChangeText={setHeight}
-        />
-        <Text>cm</Text>
-      </View>
-      <View>
-        <TextInput
-          placeholder="몸무게를 입력해주세요"
-          keyboardType="numeric"
-          value={weight}
-          onChangeText={setWeight}
-        />
-        <Text>kg</Text>
-      </View>
+      <StyledUXContainer>
+        <StyledTitle>키와 몸무게를 입력해주세요</StyledTitle>
+        <StyledInputsContainer>
+          <StyledInputContainer>
+            <TextInput
+              placeholder="키를 입력해주세요"
+              keyboardType="numeric"
+              value={height}
+              onChangeText={setHeight}
+            />
+            <StyledUnit>cm</StyledUnit>
+          </StyledInputContainer>
+          <StyledInputContainer>
+            <TextInput
+              placeholder="몸무게를 입력해주세요"
+              keyboardType="numeric"
+              value={weight}
+              onChangeText={setWeight}
+            />
+            <StyledUnit>kg</StyledUnit>
+          </StyledInputContainer>
+        </StyledInputsContainer>
+      </StyledUXContainer>
+
       <NextBtn
         onPress={() => {
           sendUserInfo({
             ...route.params,
+            height: height,
+            weight: weight,
           });
           handleSubmit();
           navigation.navigate("InfoLevel" as never, {
@@ -78,13 +87,39 @@ export default function InfoBody({
   );
 }
 
-const Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  HomeText: {
-    fontSize: 30,
-    textAlign: "center",
-  },
-});
+const StyledUnit = styled(Text)`
+  color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: 0.15px;
+`;
+const StyledTitle = styled(Text)`
+  color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 200px;
+`;
+const StyledInputContainer = styled(View)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 17px;
+  flex-direction: row;
+`;
+
+const StyledInputsContainer = styled(View)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 46px;
+`;
+
+const StyledUXContainer = styled(View)`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 39px;
+`;

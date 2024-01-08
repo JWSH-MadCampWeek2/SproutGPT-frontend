@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
 import { CheckBox } from "react-native-elements";
-import styled, { css } from "styled-components/native";
+import styled from "styled-components/native";
 
 function RecordItem({
   recordItem,

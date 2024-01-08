@@ -1,47 +1,64 @@
-import React, { useRef, useState } from "react";
-import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Linking, Text } from "react-native";
 import { CheckBox } from "react-native-elements";
-import styled, { css } from "styled-components/native";
-
-function MyCheckbox() {
-  const [isChecked, setChecked] = useState(false);
-  return (
-    <View>
-      <CheckBox checked={isChecked} onPress={() => setChecked(!isChecked)} />
-      {/* <Text>{isChecked ? "Checked!" : "Unchecked"}</Text> */}
-    </View>
-  );
-}
+import { TouchableHighlight } from "react-native-gesture-handler";
+import styled from "styled-components/native";
 
 function ExerciseItem({
   exerciseItem,
+  onExerciseChecked,
 }: {
-  exerciseItem: { name: string; description: string };
+  exerciseItem: { name: string; description: string; link: string };
+  onExerciseChecked: (name: string, isChecked: boolean) => void;
 }) {
+  const [isChecked, setChecked] = useState(false);
+
+  const handleLongPress = () => {
+    if (exerciseItem.link) {
+      Linking.openURL(exerciseItem.link);
+    }
+  };
+
+  const toggleCheckbox = () => {
+    setChecked(!isChecked);
+    onExerciseChecked(exerciseItem.name, !isChecked);
+  };
+
   return (
-    <StyledItemContainer>
-      <StyledTextContainer>
-        <StyledName>{exerciseItem.name}</StyledName>
-        <StyledDescription>{exerciseItem.description}</StyledDescription>
-      </StyledTextContainer>
-      <MyCheckbox />
-    </StyledItemContainer>
+    <StyledOuterContainer>
+      <StyledItemContainer>
+        <TouchableHighlight onLongPress={handleLongPress}>
+          <View>
+            <StyledTextContainer>
+              <StyledName>{exerciseItem.name}</StyledName>
+              <StyledDescription>{exerciseItem.description}</StyledDescription>
+            </StyledTextContainer>
+          </View>
+        </TouchableHighlight>
+        <CheckBox checked={isChecked} onPress={toggleCheckbox} />
+      </StyledItemContainer>
+    </StyledOuterContainer>
   );
 }
 
 export default ExerciseItem;
 
-const StyledItemContainer = styled(View)`
+const StyledOuterContainer = styled(View)`
   display: flex;
+  padding: 4px 8px;
   justify-content: center;
-  align-content: space-a;
   align-items: center;
+  gap: 8px;
   align-self: stretch;
   border-radius: 20px;
-  padding-horizontal: 10px;
   border: 1px solid #c4c4c4;
+  margin: 8px;
+`;
+
+const StyledItemContainer = styled(View)`
   flex-direction: row;
   margin: 12px;
+  align-content: center;
 `;
 
 const StyledTextContainer = styled(View)`

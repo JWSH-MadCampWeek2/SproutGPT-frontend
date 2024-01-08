@@ -9,10 +9,7 @@ export function RetryBtn() {
   const navigation = useNavigation();
   const onRetry = () => {
     console.log("onRetry Clicked");
-    navigation.navigate(
-      "InfoLoad" as never,
-      { user_id: "3258378056" } as never
-    ); // TODO: modify dummy data
+    navigation.navigate("InfoLoad" as never);
   };
   return <StyledBtn title="다른 운동을 추천해주세요" onPress={onRetry} />;
 }
@@ -24,6 +21,13 @@ export function ChangeGoalBtn() {
     navigation.navigate("InfoLevel" as never); // TODO: attach user_id
   };
   return <StyledBtn title="운동 목표를 바꾸고 싶어요" onPress={onChangeGoal} />;
+}
+
+export function SubmitBtn() {
+  const onChangeGoal = () => {
+    console.log("onChangeGoal Clicked");
+  };
+  return <StyledBtn title="오늘의 운동 완료" onPress={onChangeGoal} />;
 }
 
 const StyledBtn = styled(Button)`

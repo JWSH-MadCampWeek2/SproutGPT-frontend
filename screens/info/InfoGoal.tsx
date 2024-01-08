@@ -1,48 +1,11 @@
-import React, { useState } from "react";
-import { Text, StyleSheet } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, View } from "react-native";
 import { ButtonGroup } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styled from "styled-components/native";
 
 import { localPort } from "../../utils/constants";
 import { StartBtn } from "../../components/info/InfoBtn";
-
-async function sendUserGoal(userInfo: {
-  user_id: string;
-  difficulty: string;
-  target: string[];
-  exercise_goal: string;
-}) {
-  console.log(userInfo);
-  await fetch(`${localPort}/goal`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(userInfo),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Received data:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-
-  await fetch(`${localPort}/recommend`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user_id: "3258378056" }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Received recommend data:", data);
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
-}
 
 export default function InfoGoal({
   navigation,
@@ -51,47 +14,72 @@ export default function InfoGoal({
   navigation: any;
   route: any;
 }) {
-  const [selectedIndex, setSelectedIndex] = useState<number>();
-  const [goal, setGoal] = useState<string>("");
   const goalList = ["근육 증가", "체지방 감소", "현재 상태 유지"];
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [goal, setGoal] = useState<string>("");
+
   const handleSubmit = async () => {
-    await AsyncStorage.setItem("user_id", goal);
+    await AsyncStorage.setItem("user_goal", goal);
+    navigation.navigate("InfoLoad", { user_id: route.params.user_id });
   };
+
+  const sendUserGoal = async (userInfo: {
+    user_id: string;
+    difficulty: string;
+    target: string[];
+    exercise_goal: string;
+  }) => {
+    // request for update user info
+    console.log(userInfo);
+    await fetch(`${localPort}/goal`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  useEffect(() => {
+    // This useEffect will be triggered whenever the 'goal' state changes
+    sendUserGoal({
+      exercise_goal: goal,
+      ...route.params,
+    });
+  }, [goal]); // Watch for changes in the 'goal' state
 
   return (
     <>
-      <Text style={Styles.HomeText}>운동 목표를 선택해주세요</Text>
-      <ButtonGroup
-        buttons={goalList}
-        vertical
-        selectedIndex={selectedIndex}
-        onPress={(value) => {
-          setSelectedIndex(value);
-          setGoal(goalList[value]);
-        }}
-        containerStyle={{ marginBottom: 20 }}
-      />
-      <StartBtn
-        onPress={() => {
-          handleSubmit();
-          sendUserGoal({
-            exercise_goal: goal,
-            ...route.params,
-          });
-          navigation.navigate("BottomStack");
-        }}
-      />
+      <StyledUXContainer>
+        <StyledTitle>운동 목표를 선택해주세요</StyledTitle>
+        <ButtonGroup
+          buttons={goalList}
+          vertical
+          selectedIndex={selectedIndex}
+          onPress={(value) => {
+            setSelectedIndex(value);
+            setGoal(goalList[value]);
+          }}
+          containerStyle={{ marginBottom: 20 }}
+        />
+      </StyledUXContainer>
+      <StartBtn onPress={handleSubmit} />
     </>
   );
 }
 
-const Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  HomeText: {
-    fontSize: 30,
-    textAlign: "center",
-  },
-});
+const StyledTitle = styled(Text)`
+  color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 200px;
+`;
+
+const StyledUXContainer = styled(View)`
+  flex-direction: column;
+`;

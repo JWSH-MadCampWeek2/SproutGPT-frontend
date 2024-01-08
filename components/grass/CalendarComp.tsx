@@ -25,16 +25,60 @@ const markedDates = {
   "2024-01-29": { selected: true, selectedColor: "#59E659" },
 };
 
-function CalendarComp() {
+export function getCurrentDate() {
+  var date = new Date().getDate();
+  var month = new Date().getMonth() + 1;
+  var year = new Date().getFullYear();
+
+  // Ensure two digits for day, month, and year
+  var formattedDate =
+    year +
+    "-" +
+    (month < 10 ? "0" + month : month) +
+    "-" +
+    (date < 10 ? "0" + date : date);
+  return formattedDate;
+}
+
+export function getCurrentYear() {
+  const year = new Date().getFullYear();
+  return String(year);
+}
+export function getCurrentMonth() {
+  const month = new Date().getMonth() + 1;
+
+  // Ensure two digits for the month
+  const formattedMonth = month < 10 ? "0" + String(month) : String(month);
+
+  return formattedMonth;
+}
+
+export function getCurrentDay() {
+  const day = new Date().getDate();
+
+  // Ensure two digits for the day
+  var formattedDay = day < 10 ? "0" + String(day) : String(day);
+
+  return formattedDay;
+}
+
+export function dayFormat(day: number) {
+  var formattedDay = day < 10 ? "0" + String(day) : String(day);
+  return formattedDay;
+}
+
+function CalendarComp({
+  onDayPress,
+}: {
+  onDayPress: (day: { year: number; month: number; day: number }) => void;
+}) {
   return (
     <Calendar
       markedDates={markedDates}
       theme={{
         selectedDayBackgroundColor: "transparent",
       }}
-      onDayPress={(day) => {
-        console.log(day);
-      }}
+      onDayPress={onDayPress}
     />
   );
 }
