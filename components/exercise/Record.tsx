@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button } from "react-native";
+import { View, Button, Text } from "react-native";
 import { Slider, Icon } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import styled from "styled-components/native";
@@ -14,7 +14,7 @@ function Record({
   exerciseList: string[];
   onSubmit: () => void;
 }) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1); // Set initial value to 1
   const [user_id, setUser_id] = useState("");
   useEffect(() => {
     const fetchUserId = async () => {
@@ -67,7 +67,7 @@ function Record({
   };
 
   const interpolate = (start: number, end: number) => {
-    let k = (value - 0) / 10;
+    let k = (value - 1) / 179; // Adjust the range to 1-180
     return Math.ceil((1 - k) * start + k * end) % 256;
   };
 
@@ -78,13 +78,20 @@ function Record({
     return `rgb(${r},${g},${b})`;
   };
 
+  // Function to format value in HH MM format
+  const formatValue = (val: number) => {
+    const hours = Math.floor(val / 60);
+    const minutes = val % 60;
+    return `${hours}시간 ${minutes}분`;
+  };
+
   return (
     <StyledContainer>
       <Slider
         value={value}
         onValueChange={setValue}
-        maximumValue={10}
-        minimumValue={0}
+        maximumValue={180} // Set maximum value to 180
+        minimumValue={1} // Set minimum value to 1
         step={1}
         allowTouchTrack
         trackStyle={{ height: 5, backgroundColor: "transparent" }}
@@ -95,6 +102,7 @@ function Record({
           ),
         }}
       />
+      <Text>{formatValue(value)}</Text>
       <StyledBtn title="운동 기록 저장하기" onPress={onPress} />
     </StyledContainer>
   );

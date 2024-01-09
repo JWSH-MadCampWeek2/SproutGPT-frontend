@@ -1,6 +1,8 @@
 import React from "react";
 import { Calendar } from "react-native-calendars";
 
+const EXERCISE_LOW = "#EEEE90";
+
 const markedDates = {
   "2024-01-01": { selected: true, selectedColor: "#EEEE90" },
   "2024-01-03": { selected: true, selectedColor: "#19A519" },
