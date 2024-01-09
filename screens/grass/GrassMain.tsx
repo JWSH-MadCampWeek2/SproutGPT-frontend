@@ -1,21 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FlatList } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
+
 import CalendarComp, {
-  dayFormat,
-  getCurrentDate,
   getCurrentMonth,
   getCurrentYear,
 } from "../../components/grass/CalendarComp";
-import RecordItem from "../../components/grass/RecordItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { localPort } from "../../utils/constants";
-
-const DATA = [
-  { id: "1", name: "스쿼트", description: "근육 1과 근육 2의 발달에 좋습니다" },
-  { id: "2", name: "데드리프트", description: "코어 근육의 발달에 좋습니다." },
-  { id: "3", name: "트레드밀 러닝", description: "체력 강화에 좋습니다." },
-  { id: "4", name: "푸시업", description: "코어 근육의 발달에 좋습니다." },
-];
+import { DateData } from "react-native-calendars";
 
 export default function GrassMain() {
   const [user_id, setUser_id] = useState("");
@@ -23,16 +15,27 @@ export default function GrassMain() {
     year: getCurrentYear(),
     month: getCurrentMonth(),
   });
+  const [grassData, setGrassData] = useState<
+    { day: string; duration: number; exercises: string[] }[]
+  >([]);
 
-  const onDayPress = (date: { year: number; month: number; day: number }) => {
+  const onMonthChange = (date: DateData) => {
     console.log(date);
-    setCur({ year: dayFormat(date.year), month: dayFormat(date.month) });
+    setCur({
+      year: String(date.year).padStart(2, "0"),
+      month: String(date.month).padStart(2, "0"),
+    });
   };
 
-  useEffect(() => {
-    // Fetch data from the server whenever 'cur' changes
-    sendToServer();
-  }, [cur]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Fetch data from the server whenever the screen is focused
+      console.log(
+        `Screen focused @ cur year: ${cur.year} cur month: ${cur.month} user_id: ${user_id}`
+      );
+      sendToServer();
+    }, [cur, user_id])
+  );
 
   useEffect(() => {
     // Fetch user_id from AsyncStorage
@@ -45,7 +48,6 @@ export default function GrassMain() {
 
   const sendToServer = async () => {
     try {
-      console.log(`cur month: ${cur.month}`);
       const response = await fetch(`${localPort}/grass`, {
         method: "POST",
         headers: {
@@ -59,7 +61,8 @@ export default function GrassMain() {
       });
       const data = await response.json();
       // Handle the response from the server
-      console.log("Server response:", data);
+      console.log("Grass received:", data);
+      setGrassData(data.exercise_sessions);
     } catch (error) {
       console.error("Error sending data to server:", error);
     }
@@ -67,12 +70,7 @@ export default function GrassMain() {
 
   return (
     <>
-      <CalendarComp onDayPress={onDayPress} />
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <RecordItem recordItem={item} />}
-        keyExtractor={(item) => item.id}
-      />
+      <CalendarComp onMonthChange={onMonthChange} grassData={grassData} />
     </>
   );
 }

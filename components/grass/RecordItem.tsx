@@ -3,16 +3,12 @@ import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
 import { CheckBox } from "react-native-elements";
 import styled from "styled-components/native";
 
-function RecordItem({
-  recordItem,
-}: {
-  recordItem: { name: string; description: string };
-}) {
+function RecordItem({ recordItem }: { recordItem: string }) {
+  console.log(`recordItem: ${recordItem}`);
   return (
     <StyledItemContainer>
       <StyledTextContainer>
-        <StyledName>{recordItem.name}</StyledName>
-        <StyledDescription>{recordItem.description}</StyledDescription>
+        <StyledName>{recordItem}</StyledName>
       </StyledTextContainer>
     </StyledItemContainer>
   );
@@ -48,13 +44,4 @@ const StyledName = styled(Text)`
   font-weight: 400;
   line-height: 44px;
   letter-spacing: 0.15px;
-`;
-
-const StyledDescription = styled(Text)`
-  color: var(--Light-Text-Secondary, rgba(0, 0, 0, 0.6));
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px;
-  letter-spacing: 0.17px;
 `;

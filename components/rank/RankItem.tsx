@@ -1,14 +1,26 @@
-import React, { useRef, useState } from "react";
-import { SafeAreaView, View, FlatList, StyleSheet, Text } from "react-native";
-import { CheckBox } from "react-native-elements";
-import styled, { css } from "styled-components/native";
+import React from "react";
+import { View, Text, Image } from "react-native";
+import styled from "styled-components/native";
 
 // TODO: add profile image
-function RankItem({ rankItem }: { rankItem: { name: string; score: number } }) {
+function RankItem({
+  rankItem,
+}: {
+  rankItem: {
+    user_id: string;
+    nickname: string;
+    score: number;
+    profile_image: string;
+  };
+}) {
   return (
     <StyledItemContainer>
+      <Image
+        source={{ uri: rankItem.profile_image }}
+        style={{ width: 50, height: 50, borderRadius: 25 }}
+      />
       <StyledTextContainer>
-        <StyledName>{rankItem.name}</StyledName>
+        <StyledName>{rankItem.nickname}</StyledName>
         <StyledDescription>{rankItem.score}</StyledDescription>
       </StyledTextContainer>
     </StyledItemContainer>

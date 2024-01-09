@@ -18,7 +18,14 @@ const DATA = [
 ];
 
 export default function RankMain() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<
+    {
+      user_id: string;
+      nickname: string;
+      score: number;
+      profile_image: string;
+    }[]
+  >([]);
 
   const fetchData = async () => {
     try {
@@ -36,7 +43,7 @@ export default function RankMain() {
       // Check if the response is successful (status code in the range of 200-299)
       if (response.ok) {
         const responseData = await response.json();
-        console.log(`rank: ${responseData}`);
+        console.log(responseData);
         setData(responseData);
       } else {
         console.error("Failed to fetch data. Status:", response.status);
@@ -54,7 +61,7 @@ export default function RankMain() {
     <View style={Styles.container}>
       <Text style={Styles.HomeText}>Today's Rank</Text>
       <FlatList
-        data={DATA}
+        data={data}
         renderItem={({ item }) => <RankItem rankItem={item} />}
         keyExtractor={(item) => item.id}
       />

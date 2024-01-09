@@ -14,7 +14,7 @@ function Record({
   exerciseList: string[];
   onSubmit: () => void;
 }) {
-  const [value, setValue] = useState(1); // Set initial value to 1
+  const [value, setValue] = useState(10); // Set initial value to 1
   const [user_id, setUser_id] = useState("");
   useEffect(() => {
     const fetchUserId = async () => {
@@ -24,7 +24,8 @@ function Record({
     fetchUserId();
   }, []);
 
-  const today = getCurrentDate();
+  // const today = getCurrentDate();
+  const today = "2024-01-25";
 
   const onPress = async () => {
     try {
@@ -67,7 +68,7 @@ function Record({
   };
 
   const interpolate = (start: number, end: number) => {
-    let k = (value - 1) / 179; // Adjust the range to 1-180
+    let k = (value - 10) / 170; // Adjust the range to 10-180 based on step 10
     return Math.ceil((1 - k) * start + k * end) % 256;
   };
 
@@ -90,9 +91,9 @@ function Record({
       <Slider
         value={value}
         onValueChange={setValue}
-        maximumValue={180} // Set maximum value to 180
-        minimumValue={1} // Set minimum value to 1
-        step={1}
+        maximumValue={180}
+        minimumValue={10} // Set minimum value to 10
+        step={10} // Set step to 10
         allowTouchTrack
         trackStyle={{ height: 5, backgroundColor: "transparent" }}
         thumbStyle={{ height: 20, width: 20, backgroundColor: "transparent" }}

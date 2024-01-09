@@ -1,13 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
-import {
-  SafeAreaView,
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  Modal,
-} from "react-native";
+import { SafeAreaView, FlatList, StyleSheet, Modal } from "react-native";
 import { Button } from "react-native-elements";
 import ExerciseItem from "../../components/exercise/ExerciseItem";
 import Greeting from "../../components/exercise/Greeting";
@@ -30,6 +23,7 @@ export default function ExerciseMain({
 }) {
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
+  const [userPhoto, setUserPhoto] = useState("");
   const [recommend, setRecommend] = useState<
     { name: string; description: string; link: string }[]
   >(route.params.recommend);
@@ -40,12 +34,16 @@ export default function ExerciseMain({
     const getData = async () => {
       const userIdVal = await AsyncStorage.getItem("user_id");
       const userNameVal = await AsyncStorage.getItem("user_name");
+      const userPhotoVal = await AsyncStorage.getItem("user_photo");
 
       if (userIdVal) {
         setUserId(userIdVal);
       }
       if (userNameVal) {
         setUserName(userNameVal);
+      }
+      if (userPhotoVal) {
+        setUserPhoto(userPhotoVal);
       }
     };
     getData();
@@ -63,7 +61,11 @@ export default function ExerciseMain({
 
   return (
     <SafeAreaView style={styles.container}>
-      <Greeting userName={userName} navigation={navigation} />
+      <Greeting
+        userName={userName}
+        navigation={navigation}
+        userPhoto={userPhoto}
+      />
       <Button
         title="오운완!"
         type="outline"

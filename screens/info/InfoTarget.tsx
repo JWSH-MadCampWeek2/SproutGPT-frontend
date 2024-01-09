@@ -15,7 +15,7 @@ export default function InfoTarget({
 }) {
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const [target, setTarget] = useState<string[]>([]);
-  const targetList = ["등", "어깨", "복근", "하체", "팔", "상관 없음"];
+  const targetList = ["등", "어깨", "복근", "하체", "팔", "가슴", "상관 없음"];
   const handleSubmit = async () => {
     await AsyncStorage.setItem("user_target", JSON.stringify(target));
   };

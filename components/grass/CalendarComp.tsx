@@ -1,44 +1,97 @@
-import React from "react";
-import { Calendar } from "react-native-calendars";
+import React, { useState } from "react";
+import { FlatList } from "react-native";
+import { Calendar, DateData } from "react-native-calendars";
+import RecordItem from "./RecordItem";
+import { format } from "date-fns"; // Import date-fns for date formatting
 
-const EXERCISE_LOW = "#EEEE90";
+interface ExerciseData {
+  day: string;
+  duration: number;
+  exercises: string[];
+}
+interface FormatForCal {
+  [key: string]: {
+    selected: boolean;
+    selectedColor: string;
+  };
+}
+interface FormatForRecord {
+  [key: string]: {
+    exercises: string[];
+  };
+}
 
-const markedDates = {
-  "2024-01-01": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-03": { selected: true, selectedColor: "#19A519" },
-  "2024-01-06": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-08": { selected: true, selectedColor: "#19A519" },
-  "2024-01-10": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-11": { selected: true, selectedColor: "#BFEE90" },
-  "2024-01-12": { selected: true, selectedColor: "#BFEE90" },
-  "2024-01-13": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-14": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-15": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-16": { selected: true, selectedColor: "#EEEE90" },
-  "2024-01-17": { selected: true, selectedColor: "#BFEE90" },
-  "2024-01-18": { selected: true, selectedColor: "#59E659" },
-  "2024-01-19": { selected: true, selectedColor: "#BFEE90" },
-  "2024-01-20": { selected: true, selectedColor: "#19A519" },
-  "2024-01-22": { selected: true, selectedColor: "#59E659" },
-  "2024-01-23": { selected: true, selectedColor: "#19A519" },
-  "2024-01-24": { selected: true, selectedColor: "#19A519" },
-  "2024-01-25": { selected: true, selectedColor: "#BFEE90" },
-  "2024-01-27": { selected: true, selectedColor: "#19A519" },
-  "2024-01-29": { selected: true, selectedColor: "#59E659" },
+const GRASS_MIN = "#EEEE90";
+const GRASS_LOW = "#BFEE90";
+const GRASS_HIGH = "#59E659";
+const GRASS_MAX = "#19A519";
+
+const durationToLetter = (duration: number): string => {
+  if (duration <= 30) {
+    return GRASS_MIN;
+  } else if (duration <= 60) {
+    return GRASS_LOW;
+  } else if (duration <= 120) {
+    return GRASS_HIGH;
+  } else {
+    return GRASS_MAX;
+  }
+};
+const transformForCal = (
+  data: ExerciseData[],
+  year: number,
+  month: number
+): FormatForCal => {
+  let res: FormatForCal = {};
+
+  if (data) {
+    data.forEach((item) => {
+      const fYear = String(year);
+      const fMonth = String(month).padStart(2, "0");
+      const fDate = item.day.padStart(2, "0");
+      const formattedDate = `${fYear}-${fMonth}-${fDate}`;
+
+      res[formattedDate] = {
+        selected: true,
+        selectedColor: durationToLetter(item.duration),
+      };
+    });
+  }
+
+  return res;
+};
+
+const transFormForRecord = (
+  data: ExerciseData[],
+  year: number,
+  month: number
+): FormatForRecord => {
+  let res: FormatForRecord = {};
+
+  if (data) {
+    data.forEach((item) => {
+      const fYear = String(year);
+      const fMonth = String(month).padStart(2, "0");
+      const fDate = item.day.padStart(2, "0");
+      const formattedDate = `${fYear}-${fMonth}-${fDate}`;
+      res[formattedDate] = {
+        exercises: item.exercises,
+      };
+    });
+  }
+
+  return res;
 };
 
 export function getCurrentDate() {
-  var date = new Date().getDate();
-  var month = new Date().getMonth() + 1;
-  var year = new Date().getFullYear();
+  let date = new Date().getDate();
+  let month = new Date().getMonth() + 1;
+  let year = new Date().getFullYear();
 
-  // Ensure two digits for day, month, and year
-  var formattedDate =
-    year +
-    "-" +
-    (month < 10 ? "0" + month : month) +
-    "-" +
-    (date < 10 ? "0" + date : date);
+  const fYear = String(year);
+  const fMonth = String(month).padStart(2, "0");
+  const fDate = String(date).padStart(2, "0");
+  const formattedDate = `${fYear}-${fMonth}-${fDate}`;
   return formattedDate;
 }
 
@@ -46,42 +99,80 @@ export function getCurrentYear() {
   const year = new Date().getFullYear();
   return String(year);
 }
+
 export function getCurrentMonth() {
   const month = new Date().getMonth() + 1;
-
-  // Ensure two digits for the month
-  const formattedMonth = month < 10 ? "0" + String(month) : String(month);
-
-  return formattedMonth;
+  return String(month).padStart(2, "0");
 }
 
 export function getCurrentDay() {
   const day = new Date().getDate();
-
-  // Ensure two digits for the day
-  var formattedDay = day < 10 ? "0" + String(day) : String(day);
-
-  return formattedDay;
-}
-
-export function dayFormat(day: number) {
-  var formattedDay = day < 10 ? "0" + String(day) : String(day);
-  return formattedDay;
+  return String(day).padStart(2, "0");
 }
 
 function CalendarComp({
-  onDayPress,
+  onMonthChange,
+  grassData,
 }: {
-  onDayPress: (day: { year: number; month: number; day: number }) => void;
+  onMonthChange: (day: DateData) => void;
+  grassData: { day: string; duration: number; exercises: string[] }[];
 }) {
+  const [curDate, setCurDate] = useState<{
+    year: string;
+    month: string;
+    day: string;
+  }>({
+    year: getCurrentYear(),
+    month: getCurrentMonth(),
+    day: getCurrentDay(),
+  });
+
+  const confinedDataForCal = transformForCal(
+    grassData,
+    Number(curDate.year),
+    Number(curDate.month)
+  );
+
+  console.log(confinedDataForCal);
+
+  const confinedDataForRecord = transFormForRecord(
+    grassData,
+    Number(curDate.year),
+    Number(curDate.month)
+  );
+
+  const onChange = (selectedDate: DateData) => {
+    const currentDate = new Date(selectedDate.dateString) || new Date();
+    setCurDate({
+      year: String(currentDate.getFullYear()),
+      month: String(currentDate.getMonth() + 1),
+      day: String(currentDate.getDate()),
+    });
+  };
+
   return (
-    <Calendar
-      markedDates={markedDates}
-      theme={{
-        selectedDayBackgroundColor: "transparent",
-      }}
-      onDayPress={onDayPress}
-    />
+    <>
+      <Calendar
+        markedDates={confinedDataForCal}
+        theme={{
+          selectedDayBackgroundColor: "transparent",
+        }}
+        onDayPress={onChange}
+        onMonthChange={onMonthChange}
+      />
+      <FlatList
+        data={
+          confinedDataForRecord[
+            `${String(curDate.year)}-${String(curDate.month).padStart(
+              2,
+              "0"
+            )}-${String(curDate.day).padStart(2, "0")}`
+          ]?.exercises || [] // Explicitly specify the type as string[]
+        }
+        renderItem={({ item }) => <RecordItem recordItem={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </>
   );
 }
 
