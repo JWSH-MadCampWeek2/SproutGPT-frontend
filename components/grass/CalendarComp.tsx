@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, View, Text, Image } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import RecordItem from "./RecordItem";
+import styled from "styled-components/native";
+import { SPROUT_GPT_PROFILE } from "../../utils/constants";
 
 interface ExerciseData {
   day: string;
@@ -16,6 +18,7 @@ interface FormatForCal {
 }
 interface FormatForRecord {
   [key: string]: {
+    duration: number;
     exercises: string[];
   };
 }
@@ -75,6 +78,7 @@ const transFormForRecord = (
       const formattedDate = `${fYear}-${fMonth}-${fDate}`;
       res[formattedDate] = {
         exercises: item.exercises,
+        duration: item.duration,
       };
     });
   }
@@ -159,6 +163,27 @@ function CalendarComp({
         onDayPress={onChange}
         onMonthChange={onMonthChange}
       />
+      <StyledContainer>
+        <Image
+          source={require("../../assets/sprout_icon.png")}
+          style={{ width: 50, height: 50, borderRadius: 25 }}
+        />
+        <StyledAnswer>
+          <StyledName>SproutGPT</StyledName>
+          <StyledMsgBox>
+            <StyledMsg>
+              이 날은 {""}
+              {confinedDataForRecord[
+                `${String(curDate.year)}-${String(curDate.month).padStart(
+                  2,
+                  "0"
+                )}-${String(curDate.day).padStart(2, "0")}`
+              ]?.duration || 0}
+              분 동안 운동했어요
+            </StyledMsg>
+          </StyledMsgBox>
+        </StyledAnswer>
+      </StyledContainer>
       <FlatList
         data={
           confinedDataForRecord[
@@ -176,3 +201,28 @@ function CalendarComp({
 }
 
 export default CalendarComp;
+const StyledMsgBox = styled(View)``;
+
+const StyledName = styled(Text)`
+  font-weight: bold;
+  font-size: 24px;
+`;
+
+const StyledMsg = styled(Text)`
+  font-size: 16x;
+  line-height: 24px;
+`;
+
+const StyledAnswer = styled(View)`
+  flex-direction: column;
+  margin-top: 12px;
+  margin-left: 12px;
+  gap: 16px;
+`;
+
+const StyledContainer = styled(View)`
+  flex-direction: row;
+  margin-top: 12px;
+  margin-left: 20px;
+  margin-right: 20px;
+`;

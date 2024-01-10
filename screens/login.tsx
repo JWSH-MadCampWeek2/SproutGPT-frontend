@@ -138,9 +138,7 @@ export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
             <StyledTitle>만나서 반가워요!</StyledTitle>
             <StyledTitle>저는 여러분의 운동 추천 AI</StyledTitle>
             <StyledTitleContainer>
-              <StyledTitle
-                style={{ color: GREEN_DEEP, fonts: { fontFamily: "Ubuntu-B" } }}
-              >
+              <StyledTitle style={{ color: GREEN_DEEP }}>
                 Sprout GPT
               </StyledTitle>
               <StyledTitle>예요</StyledTitle>

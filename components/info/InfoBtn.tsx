@@ -8,7 +8,7 @@ function InfoBtn({ title, onPress }: { title: string; onPress: () => void }) {
       title={title}
       color={GREEN_DEEP}
       onPress={onPress}
-      style={{ margin: 16 }}
+      style={{ marginHorizontal: 16, height: 48 }}
       radius="lg"
     />
   );

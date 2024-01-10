@@ -4,21 +4,23 @@ import Login from "./screens/Login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import { InfoStack } from "./navigation/Navigation";
-import { NavigationContainer } from "@react-navigation/native";
-import InfoGender from "./screens/info/InfoGender";
-import InfoAge from "./screens/info/InfoAge";
-import InfoBody from "./screens/info/InfoBody";
-import InfoLevel from "./screens/info/InfoLevel";
-import InfoTarget from "./screens/info/InfoTarget";
-import InfoGoal from "./screens/info/InfoGoal";
+import * as Font from "expo-font";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFont, setIsFont] = useState(false);
 
   // AsyncStorage.clear();
-
+  useEffect(() => {
+    const loadFont = async () => {
+      await Font.loadAsync({
+        Jalnan2: require("./assets/font/Jalnan2.otf"),
+      });
+      setIsFont(true);
+    };
+    loadFont();
+  }, []);
   useEffect(() => {
     const getData = async () => {
       const userIdVal = await AsyncStorage.getItem("user_id");
@@ -35,7 +37,7 @@ function App() {
     }, 3000);
   };
 
-  return false ? (
+  return isLoggedIn ? (
     <Home />
   ) : (
     <Login
@@ -48,8 +50,3 @@ function App() {
 }
 
 export default App;
-
-const StyledContainer = styled(View)`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-`;

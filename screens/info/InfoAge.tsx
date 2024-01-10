@@ -80,7 +80,6 @@ const StyledInput = styled(TextInput)`
 
 const StyledUnit = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
-
   font-size: 24px;
   font-style: normal;
   font-weight: bold;

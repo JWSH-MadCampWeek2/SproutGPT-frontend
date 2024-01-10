@@ -26,6 +26,7 @@ const StyledItemContainer = styled(View)`
   border: 1px solid #c4c4c4;
   flex-direction: row;
   margin: 12px;
+  background-color: #ffffff;
 `;
 
 const StyledTextContainer = styled(View)`

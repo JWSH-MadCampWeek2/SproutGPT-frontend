@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { Text, View, FlatList } from "react-native";
 import {
   getCurrentMonth,
   getCurrentYear,
@@ -44,9 +45,12 @@ export default function RankMain() {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // Use useFocusEffect to run fetchData when the screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   return (
     <StyledLayout>
@@ -59,6 +63,7 @@ export default function RankMain() {
     </StyledLayout>
   );
 }
+
 const StyledTitle = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
   font-size: 48px;

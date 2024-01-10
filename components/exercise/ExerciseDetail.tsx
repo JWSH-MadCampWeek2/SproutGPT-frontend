@@ -1,7 +1,14 @@
 import React from "react";
-import { View, Linking, Text, Button } from "react-native";
+import { View, Linking, Text, Button, Image } from "react-native";
 import styled from "styled-components/native";
 import YoutubeButton from "./YoutubeButton";
+import { SPROUT_GPT_PROFILE } from "../../utils/constants";
+import {
+  GREEN_LIGHT,
+  GREEN_MAIN,
+  ORANGE_MAIN,
+  GREEN_DEEP,
+} from "../../utils/colors";
 
 function ExerciseDetail({
   exerciseItem,
@@ -20,48 +27,67 @@ function ExerciseDetail({
       Linking.openURL(exerciseItem.link);
     }
   };
+  const exerciseText =
+    `추천드린 운동은 ${exerciseItem.name} 입니다. \n` +
+    `이 운동은 ${exerciseItem.description} 이고, ${exerciseItem.target} 부위를 타겟으로 합니다.\n` +
+    `이 운동을 배울 수 있는 영상의 링크를 드릴게요.`;
+
   return (
-    <View>
-      <StyledTextContainer>
-        <StyledName>{exerciseItem.name}</StyledName>
-        <YoutubeButton onPress={onLinkPress} />
-        <StyledDescription>{exerciseItem.description}</StyledDescription>
-        <StyledDescription>타겟 부위: {exerciseItem.target}</StyledDescription>
-      </StyledTextContainer>
+    <StyledLayout>
+      <StyledContainer>
+        <Image
+          source={{ uri: SPROUT_GPT_PROFILE }}
+          style={{ width: 50, height: 50, borderRadius: 25 }}
+        />
+        <StyledAnswer>
+          <StyledName>SproutGPT</StyledName>
+          <StyledMsgBox>
+            <StyledMsg>{exerciseText}</StyledMsg>
+          </StyledMsgBox>
+          <YoutubeButton onPress={onLinkPress} />
+        </StyledAnswer>
+      </StyledContainer>
       <Button title="돌아가기" onPress={onDetailComplete} />
-    </View>
+    </StyledLayout>
   );
 }
 
 export default ExerciseDetail;
 
-const StyledItemContainer = styled(View)`
-  flex-direction: row;
-  margin: 12px;
-  align-content: center;
-`;
-
-const StyledTextContainer = styled(View)`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 240px;
-  margin: 8px;
+const StyledMsgBox = styled(View)`
+  background-color: #ffffff;
+  max-width: 90%;
 `;
 
 const StyledName = styled(Text)`
-  color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
-  font-size: 48px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 200px;
+  font-family: Jalnan2;
+
+  font-weight: bold;
+  font-size: 24px;
 `;
 
-const StyledDescription = styled(Text)`
-  color: var(--Light-Text-Secondary, rgba(0, 0, 0, 0.6));
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px;
-  letter-spacing: 0.17px;
+const StyledMsg = styled(Text)`
+  font-family: Jalnan2;
+
+  font-size: 16x;
+  line-height: 24px;
+`;
+
+const StyledAnswer = styled(View)`
+  flex-direction: column;
+  margin-top: 12px;
+  gap: 16px;
+`;
+
+const StyledContainer = styled(View)`
+  flex-direction: row;
+  margin-top: 48px;
+  margin-left: 20px;
+  margin-right: 20px;
+`;
+
+const StyledLayout = styled(View)`
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
 `;

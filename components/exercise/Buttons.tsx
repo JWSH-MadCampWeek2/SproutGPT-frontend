@@ -4,7 +4,7 @@ import { Button } from "@rneui/themed";
 import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GREEN_MAIN } from "../../utils/colors";
+import { GREEN_DEEP, GREEN_MAIN } from "../../utils/colors";
 
 export function RetryBtn() {
   const navigation = useNavigation();
@@ -57,7 +57,15 @@ export function LogoutBtn() {
     AsyncStorage.clear();
     navigation.navigate("App");
   };
-  return <StyledBtn title="로그아웃" onPress={onLogout} />;
+  return (
+    <Button
+      title={"로그아웃"}
+      color={GREEN_DEEP}
+      onPress={onLogout}
+      style={{ marginHorizontal: 16, height: 48 }}
+      radius="lg"
+    />
+  );
 }
 
 const StyledBtn = styled(Button)`
