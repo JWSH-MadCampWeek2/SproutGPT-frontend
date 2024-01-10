@@ -100,7 +100,7 @@ const StyledGreeting = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
   font-size: 24px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   line-height: 60px;
 `;
 

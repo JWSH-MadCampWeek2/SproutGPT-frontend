@@ -29,7 +29,7 @@ function Home() {
 
   return (
     <NavigationContainer>
-      <InfoStack initialRouteName={false ? "InfoLoad" : "InfoGender"} />
+      <InfoStack initialRouteName={isSignedUp ? "InfoLoad" : "InfoGender"} />
     </NavigationContainer>
   );
 }

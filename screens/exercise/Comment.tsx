@@ -52,7 +52,7 @@ const StyledName = styled(Text)`
 `;
 
 const StyledMsg = styled(Text)`
-  font-size: 16px;
+  font-size: 16x;
   line-height: 24px;
 `;
 

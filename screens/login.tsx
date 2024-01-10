@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, ImageBackground, Modal } from "react-native";
+import { Text, View, ImageBackground, Modal, Image } from "react-native";
 import { Button } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import KakaoLogin from "../components/KakaoLogin";
 import { localPort } from "../utils/constants";
 import styled from "styled-components/native";
-import { YELLOW_KAKAO } from "../utils/colors";
+import { GREEN_DEEP, ORANGE_MAIN, YELLOW_KAKAO } from "../utils/colors";
 
 export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
   const [tryAuth, setTryAuth] = useState(false);
@@ -127,13 +127,30 @@ export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
   }, [userInfo, loginSuccess]);
 
   return (
-    <StyledContainer>
+    <>
       <ImageBackground
         source={require("../assets/sprout_background.png")}
         style={{ width: "100%", height: "100%" }}
       >
         <StyledContainer>
-          <StyledTitle>안녕하세요</StyledTitle>
+          <StyledIntroContainer>
+            <StyledTitle>안녕하세요,</StyledTitle>
+            <StyledTitle>만나서 반가워요!</StyledTitle>
+            <StyledTitle>저는 여러분의 운동 추천 AI</StyledTitle>
+            <StyledTitleContainer>
+              <StyledTitle
+                style={{ color: GREEN_DEEP, fonts: { fontFamily: "Ubuntu-B" } }}
+              >
+                Sprout GPT
+              </StyledTitle>
+              <StyledTitle>예요</StyledTitle>
+            </StyledTitleContainer>
+          </StyledIntroContainer>
+
+          <Image
+            source={require("../assets/sprout_icon.png")}
+            style={{ width: 100, height: 100 }}
+          />
           <StyledBtn
             title="Kakao로 로그인하기"
             onPress={() => {
@@ -155,7 +172,7 @@ export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
           </Modal>
         </StyledContainer>
       </ImageBackground>
-    </StyledContainer>
+    </>
   );
 }
 
@@ -163,13 +180,14 @@ const StyledContainer = styled(View)`
   flex: 1;
   align-items: center;
   justify-content: center;
+  gap: 20px;
 `;
 const StyledTitle = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
   font-size: 24px;
   font-style: normal;
   font-weight: bold;
-  line-height: 200px;
+  line-height: 36px;
 `;
 const StyledBtn = styled(Button)`
   font-size: 24px;
@@ -180,4 +198,12 @@ const StyledBtn = styled(Button)`
   margin-left: 12px;
   margin-right: 12px;
   border-radius: 100%;
+`;
+const StyledTitleContainer = styled(View)`
+  flex-direction: row;
+`;
+
+const StyledIntroContainer = styled(View)`
+  flex-direction: column;
+  align-items: center;
 `;

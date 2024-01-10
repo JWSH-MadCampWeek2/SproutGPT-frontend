@@ -4,6 +4,14 @@ import Login from "./screens/Login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
 import { View } from "react-native";
+import { InfoStack } from "./navigation/Navigation";
+import { NavigationContainer } from "@react-navigation/native";
+import InfoGender from "./screens/info/InfoGender";
+import InfoAge from "./screens/info/InfoAge";
+import InfoBody from "./screens/info/InfoBody";
+import InfoLevel from "./screens/info/InfoLevel";
+import InfoTarget from "./screens/info/InfoTarget";
+import InfoGoal from "./screens/info/InfoGoal";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

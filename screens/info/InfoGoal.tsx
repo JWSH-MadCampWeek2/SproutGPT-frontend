@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text, View, ImageBackground } from "react-native";
 import { ButtonGroup } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
 
 import { localPort } from "../../utils/constants";
 import { StartBtn } from "../../components/info/InfoBtn";
+import { GREEN_DEEP } from "../../utils/colors";
 
 export default function InfoGoal({
   navigation,
@@ -17,7 +18,6 @@ export default function InfoGoal({
   const goalList = ["근육 증가", "체지방 감소", "현재 상태 유지"];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [goal, setGoal] = useState<string>("근육 증가");
-  console.log(route.params);
 
   const handleSubmit = async () => {
     await AsyncStorage.setItem("user_goal", goal);
@@ -58,22 +58,51 @@ export default function InfoGoal({
   // }, [goal]); // Watch for changes in the 'goal' state
 
   return (
-    <>
-      <StyledUXContainer>
-        <StyledTitle>운동 목표를 선택해주세요</StyledTitle>
-        <ButtonGroup
-          buttons={goalList}
-          vertical
-          selectedIndex={selectedIndex}
-          onPress={(value) => {
-            setSelectedIndex(value);
-            setGoal(goalList[value]);
-          }}
-          containerStyle={{ marginBottom: 20 }}
-        />
-      </StyledUXContainer>
-      <StartBtn onPress={handleSubmit} />
-    </>
+    <StyledContainer>
+      <ImageBackground
+        source={require("../../assets/sprout_background.png")}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <StyledUXContainer>
+          <StyledTitle>운동 목표를 선택해주세요</StyledTitle>
+          <ButtonGroup
+            buttons={goalList}
+            vertical
+            selectedIndex={selectedIndex}
+            onPress={(value) => {
+              setSelectedIndex(value);
+              setGoal(goalList[value]);
+            }}
+            containerStyle={{
+              backgroundColor: "#A9BA9DF0",
+              width: "90%",
+              borderColor: "transparent",
+            }}
+            selectedButtonStyle={{
+              backgroundColor: GREEN_DEEP,
+              borderColor: "#FFFFFF",
+            }}
+            disabledSelectedStyle={{
+              borderColor: "#FFFFFF",
+              backgroundColor: "#808080",
+              borderWidth: 10,
+            }}
+            disabledStyle={{
+              borderColor: "#FFFFFF",
+              backgroundColor: "#808080",
+              borderWidth: 10,
+            }}
+            buttonStyle={{
+              borderRadius: 100,
+            }}
+            textStyle={{ color: "#fff", fontSize: 20 }}
+          />
+        </StyledUXContainer>
+        <StyledBtnContainer>
+          <StartBtn onPress={handleSubmit} />
+        </StyledBtnContainer>
+      </ImageBackground>
+    </StyledContainer>
   );
 }
 
@@ -81,10 +110,19 @@ const StyledTitle = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
   font-size: 24px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: bold;
   line-height: 200px;
 `;
 
 const StyledUXContainer = styled(View)`
   flex-direction: column;
+  align-items: center;
+`;
+const StyledBtnContainer = styled(View)`
+  width: 100%;
+  position: absolute;
+  bottom: 300px;
+`;
+const StyledContainer = styled(View)`
+  align-items: center;
 `;

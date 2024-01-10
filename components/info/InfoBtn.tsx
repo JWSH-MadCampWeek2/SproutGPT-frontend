@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Button } from "@rneui/themed";
+import { GREEN_DEEP, GREEN_LIGHT } from "../../utils/colors";
 
 function InfoBtn({ title, onPress }: { title: string; onPress: () => void }) {
   return (
     <Button
       title={title}
-      type="outline"
+      color={GREEN_DEEP}
       onPress={onPress}
       style={{ margin: 16 }}
+      radius="lg"
     />
   );
 }
