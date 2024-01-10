@@ -78,7 +78,7 @@ function Greeting({
         source={{ uri: userPhoto }}
         style={{ width: 50, height: 50, borderRadius: 25 }}
       />
-      <StyledGreeting>안녕하세요 {userName} 님!</StyledGreeting>
+      <StyledGreeting>안녕하세요, {userName} 님!</StyledGreeting>
       <SettingsButton onPress={onSetting} />
       <Modal visible={isSetting}>
         <Setting
@@ -108,9 +108,8 @@ const StyledGreetingContainer = styled(View)`
   display: flex;
   padding: 10px;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  gap: 10px;
   border-radius: 20px;
   background: #f5f5f5;
   margin: 12px;

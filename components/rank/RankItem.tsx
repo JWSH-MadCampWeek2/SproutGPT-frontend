@@ -39,7 +39,9 @@ const StyledItemContainer = styled(View)`
   padding-horizontal: 10px;
   border: 1px solid #c4c4c4;
   flex-direction: row;
-  margin: 12px;
+  margin: 8px;
+  gap: 20px;
+  background-color: #ffffff;
 `;
 
 const StyledTextContainer = styled(View)`

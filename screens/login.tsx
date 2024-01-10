@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button, StyleSheet, Modal } from "react-native";
+import { Text, View, ImageBackground, Modal } from "react-native";
+import { Button } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import KakaoLogin from "../components/KakaoLogin";
 import { localPort } from "../utils/constants";
+import styled from "styled-components/native";
+import { YELLOW_KAKAO } from "../utils/colors";
 
 export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
   const [tryAuth, setTryAuth] = useState(false);
@@ -124,30 +127,57 @@ export default function Login({ loginSuccess }: { loginSuccess: () => void }) {
   }, [userInfo, loginSuccess]);
 
   return (
-    <View style={Styles.container}>
-      <Text style={Styles.HomeText}>안녕하세요</Text>
-      <Button
-        title="Kakao로 로그인하기"
-        onPress={() => {
-          setTryAuth(true);
-        }}
-      />
-      <Modal visible={tryAuth}>
-        <KakaoLogin onAuthSuccess={onSuccess} />
-      </Modal>
-    </View>
+    <StyledContainer>
+      <ImageBackground
+        source={require("../assets/sprout_background.png")}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <StyledContainer>
+          <StyledTitle>안녕하세요</StyledTitle>
+          <StyledBtn
+            title="Kakao로 로그인하기"
+            onPress={() => {
+              setTryAuth(true);
+            }}
+            icon={{
+              name: "chatbubble",
+              type: "ionicon",
+              size: 15,
+              color: "#000000",
+            }}
+            iconContainerStyle={{ marginRight: 10 }}
+            radius={"lg"}
+            color={YELLOW_KAKAO}
+            titleStyle={{ color: "#000000", fontWeight: "bold" }}
+          />
+          <Modal visible={tryAuth}>
+            <KakaoLogin onAuthSuccess={onSuccess} />
+          </Modal>
+        </StyledContainer>
+      </ImageBackground>
+    </StyledContainer>
   );
 }
 
-const Styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  HomeText: {
-    fontSize: 30,
-    textAlign: "center",
-  },
-});
+const StyledContainer = styled(View)`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
+const StyledTitle = styled(Text)`
+  color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 200px;
+`;
+const StyledBtn = styled(Button)`
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  width: 200px;
+  margin-bottom: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
+  border-radius: 100%;
+`;

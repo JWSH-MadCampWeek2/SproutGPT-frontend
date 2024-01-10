@@ -15,6 +15,7 @@ export function RetryBtn() {
   return (
     <StyledBtn
       title="다른 운동을 추천해주세요"
+      radius={"lg"}
       onPress={onRetry}
       color={GREEN_MAIN}
     />
@@ -29,6 +30,7 @@ export function ChangeGoalBtn() {
   };
   return (
     <StyledBtn
+      radius={"lg"}
       title="운동 목표를 바꾸고 싶어요"
       onPress={onChangeGoal}
       color={GREEN_MAIN}
@@ -42,6 +44,7 @@ export function SubmitBtn() {
   };
   return (
     <StyledBtn
+      radius={"lg"}
       title="오늘의 운동 완료"
       onPress={onChangeGoal}
       color={GREEN_MAIN}
@@ -64,6 +67,5 @@ const StyledBtn = styled(Button)`
   margin-bottom: 8px;
   margin-left: 12px;
   margin-right: 12px;
-  border-color: blue;
   border-radius: 100%;
 `;

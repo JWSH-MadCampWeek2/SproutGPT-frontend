@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons"; // or any other icon library you are using
 
 import ExerciseMain from "../screens/exercise/ExerciseMain";
 import GrassMain from "../screens/grass/GrassMain";
@@ -13,6 +14,8 @@ import InfoLevel from "../screens/info/InfoLevel";
 import InfoTarget from "../screens/info/InfoTarget";
 import InfoLoad from "../screens/info/InfoLoad";
 import App from "../App";
+
+import { GREEN_MAIN, GREEN_DEEP } from "../utils/colors";
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -42,10 +45,40 @@ export function InfoStack({ initialRouteName }: { initialRouteName: string }) {
 
 export function BottomStack({ route }: { route?: any }) {
   return (
-    <BottomTab.Navigator initialRouteName="ExerciseMain">
-      <BottomTab.Screen name="ExerciseMain" component={ExerciseMain} />
-      <BottomTab.Screen name="GrassMain" component={GrassMain} />
-      <BottomTab.Screen name="RankMain" component={RankMain} />
+    <BottomTab.Navigator
+      initialRouteName="Exercise"
+      screenOptions={({ route }) => ({
+        headerShown: true,
+        tabBarActiveTintColor: GREEN_MAIN,
+        tabBarStyle: {
+          height: 90,
+          paddingHorizontal: 5,
+          paddingTop: 0,
+          position: "absolute",
+          borderTopWidth: 0,
+        },
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === "Exercise") {
+            // Set the icon for ExerciseMain
+            iconName = "dumbbell";
+          } else if (route.name === "History") {
+            // Set the icon for GrassMain
+            iconName = "history";
+          } else if (route.name === "Ranking") {
+            // Set the icon for RankMain
+            iconName = "trophy";
+          }
+
+          // Use any icon library or image here
+          return <FontAwesome5 name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <BottomTab.Screen name="Exercise" component={ExerciseMain} />
+      <BottomTab.Screen name="History" component={GrassMain} />
+      <BottomTab.Screen name="Ranking" component={RankMain} />
     </BottomTab.Navigator>
   );
 }

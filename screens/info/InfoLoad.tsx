@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { localPort } from "../../utils/constants";
 import { useNavigation } from "@react-navigation/native";
+import { Recommending } from "../../components/Loading";
 
 function InfoLoad() {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ function InfoLoad() {
             );
 
             navigation.navigate("BottomStack", {
-              screen: "ExerciseMain",
+              screen: "Exercise",
               params: {
                 recommend: data.recommended_exercises.map((recItem: any) => ({
                   name: recItem.name,
@@ -63,7 +64,7 @@ function InfoLoad() {
     fetchData();
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
-  return <StyledTitle>추천 중 ...</StyledTitle>;
+  return <Recommending />;
 }
 
 const StyledTitle = styled(Text)`

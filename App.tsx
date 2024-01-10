@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styled from "styled-components/native";
+import { View } from "react-native";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // AsyncStorage.clear();
 
@@ -18,7 +21,13 @@ function App() {
     getData();
   }, []);
 
-  return isLoggedIn ? (
+  const componentDidMount = async () => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+  };
+
+  return false ? (
     <Home />
   ) : (
     <Login
@@ -31,3 +40,8 @@ function App() {
 }
 
 export default App;
+
+const StyledContainer = styled(View)`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+`;
