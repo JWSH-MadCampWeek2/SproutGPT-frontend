@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, Text } from "react-native";
-import { Slider } from "@rneui/themed";
+import { View, Text, ImageBackground } from "react-native";
+import { Slider, Button, Icon } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import styled from "styled-components/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { localPort } from "../../utils/constants";
 import { getCurrentDate } from "../grass/CalendarComp";
 import BackButton from "../BackButton";
+import { GREEN_DEEP, GREEN_MAIN, ORANGE_MAIN } from "../../utils/colors";
+
+export const formatValue = (val: number) => {
+  const hours = Math.floor(val / 60);
+  const minutes = val % 60;
+  return `${hours}시간 ${minutes}분`;
+};
 
 function Record({
   exerciseList,
@@ -67,65 +74,65 @@ function Record({
     }
   };
 
-  const interpolate = (start: number, end: number) => {
-    let k = (value - 10) / 170; // Adjust the range to 10-180 based on step 10
-    return Math.ceil((1 - k) * start + k * end) % 256;
-  };
-
-  const color = () => {
-    let r = interpolate(255, 0);
-    let g = interpolate(0, 255);
-    let b = interpolate(0, 0);
-    return `rgb(${r},${g},${b})`;
-  };
-
   // Function to format value in HH MM format
-  const formatValue = (val: number) => {
-    const hours = Math.floor(val / 60);
-    const minutes = val % 60;
-    return `${hours}시간 ${minutes}분`;
-  };
 
   return (
-    <StyledContainer>
-      <BackButton onPress={onSubmit} />
-      <Slider
-        value={value}
-        onValueChange={setValue}
-        maximumValue={180}
-        minimumValue={10} // Set minimum value to 10
-        step={10} // Set step to 10
-        allowTouchTrack
-        trackStyle={{ height: 5, backgroundColor: "transparent" }}
-        thumbStyle={{ height: 20, width: 20, backgroundColor: "transparent" }}
-        thumbProps={{
-          children: (
-            <MaterialCommunityIcons name="dumbbell" size={20} color={color()} />
-          ),
-        }}
-      />
-      <Text>{formatValue(value)}</Text>
-      <StyledBtn title="운동 기록 저장하기" onPress={onPress} />
-    </StyledContainer>
+    <ImageBackground
+      source={require("../../assets/sprout_background.png")}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <StyledContainer>
+        <BackButton onPress={onSubmit} />
+        <Slider
+          value={value}
+          onValueChange={setValue}
+          maximumValue={180}
+          minimumValue={10} // Set minimum value to 10
+          step={10} // Set step to 10
+          allowTouchTrack
+          trackStyle={{ height: 5, backgroundColor: "transparent" }}
+          thumbStyle={{ height: 20, width: 20, backgroundColor: "transparent" }}
+          thumbProps={{
+            children: (
+              <Icon
+                name="heartbeat"
+                type="font-awesome"
+                size={20}
+                reverse
+                containerStyle={{ bottom: 20, right: 20 }}
+                color={ORANGE_MAIN}
+              />
+            ),
+          }}
+        />
+        <StyledTitle>{formatValue(value)}</StyledTitle>
+        <StyledButton
+          color={GREEN_MAIN}
+          radius={"lg"}
+          title="운동 기록 저장하기"
+          onPress={onPress}
+        />
+      </StyledContainer>
+    </ImageBackground>
   );
 }
 
-const StyledBtn = styled(Button)`
-  color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  margin-bottom: 8px;
-  margin-left: 12px;
-  margin-right: 12px;
-  border-color: blue;
-  border-radius: 100%;
+const StyledContainer = styled(View)`
+  gap: 48px;
+  margin: 48px;
 `;
 
-const StyledContainer = styled(View)`
-  margin: 48px;
-  margin-top: 80px;
-  gap: 48px;
+const StyledTitle = styled(Text)`
+  font-family: Jalnan2;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 200px;
+  text-align: center;
+`;
+
+const StyledButton = styled(Button)`
+  color: ${GREEN_MAIN};
 `;
 
 export default Record;

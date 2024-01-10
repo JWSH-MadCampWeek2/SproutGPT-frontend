@@ -9,18 +9,18 @@ import * as Font from "expo-font";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isFont, setIsFont] = useState(false);
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
 
-  // AsyncStorage.clear();
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
         Jalnan2: require("./assets/font/Jalnan2.otf"),
       });
-      setIsFont(true);
+      setIsFontLoaded(true);
     };
     loadFont();
   }, []);
+
   useEffect(() => {
     const getData = async () => {
       const userIdVal = await AsyncStorage.getItem("user_id");
@@ -31,11 +31,18 @@ function App() {
     getData();
   }, []);
 
-  const componentDidMount = async () => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  };
+  useEffect(() => {
+    if (isFontLoaded) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    }
+  }, [isFontLoaded]);
+
+  if (!isFontLoaded) {
+    // Font is still loading, you can render a loading screen or component here
+    return <View />;
+  }
 
   return isLoggedIn ? (
     <Home />

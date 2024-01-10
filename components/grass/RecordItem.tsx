@@ -39,6 +39,7 @@ const StyledTextContainer = styled(View)`
 
 const StyledName = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
+  font-family: Jalnan2;
   font-size: 20px;
   font-style: normal;
   font-weight: 400;

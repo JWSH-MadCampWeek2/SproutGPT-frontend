@@ -54,7 +54,7 @@ export default function RankMain() {
 
   return (
     <StyledLayout>
-      <StyledTitle>이번 달 랭킹</StyledTitle>
+      <StyledTitle>SPROUT RANKING</StyledTitle>
       <StyledFlatList
         data={data}
         renderItem={({ item }) => <RankItem rankItem={item} />}
@@ -66,7 +66,8 @@ export default function RankMain() {
 
 const StyledTitle = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
-  font-size: 48px;
+  font-family: Jalnan2;
+  font-size: 36px;
   font-style: normal;
   font-weight: 400;
   line-height: 80px;

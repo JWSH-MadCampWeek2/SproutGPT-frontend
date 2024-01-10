@@ -4,6 +4,7 @@ import { Calendar, DateData } from "react-native-calendars";
 import RecordItem from "./RecordItem";
 import styled from "styled-components/native";
 import { SPROUT_GPT_PROFILE } from "../../utils/constants";
+import { formatValue } from "../exercise/Record";
 
 interface ExerciseData {
   day: string;
@@ -173,13 +174,15 @@ function CalendarComp({
           <StyledMsgBox>
             <StyledMsg>
               이 날은 {""}
-              {confinedDataForRecord[
-                `${String(curDate.year)}-${String(curDate.month).padStart(
-                  2,
-                  "0"
-                )}-${String(curDate.day).padStart(2, "0")}`
-              ]?.duration || 0}
-              분 동안 운동했어요
+              {formatValue(
+                confinedDataForRecord[
+                  `${String(curDate.year)}-${String(curDate.month).padStart(
+                    2,
+                    "0"
+                  )}-${String(curDate.day).padStart(2, "0")}`
+                ]?.duration
+              ) || 0}
+              동안 운동했어요
             </StyledMsg>
           </StyledMsgBox>
         </StyledAnswer>
@@ -204,11 +207,13 @@ export default CalendarComp;
 const StyledMsgBox = styled(View)``;
 
 const StyledName = styled(Text)`
+  font-family: Jalnan2;
   font-weight: bold;
   font-size: 24px;
 `;
 
 const StyledMsg = styled(Text)`
+  font-family: Jalnan2;
   font-size: 16x;
   line-height: 24px;
 `;

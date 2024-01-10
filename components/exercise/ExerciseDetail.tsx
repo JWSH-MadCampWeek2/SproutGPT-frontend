@@ -9,6 +9,7 @@ import {
   ORANGE_MAIN,
   GREEN_DEEP,
 } from "../../utils/colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function ExerciseDetail({
   exerciseItem,
@@ -44,15 +45,30 @@ function ExerciseDetail({
           <StyledMsgBox>
             <StyledMsg>{exerciseText}</StyledMsg>
           </StyledMsgBox>
-          <YoutubeButton onPress={onLinkPress} />
         </StyledAnswer>
       </StyledContainer>
-      <Button title="돌아가기" onPress={onDetailComplete} />
+      <TouchableOpacity onPress={onLinkPress}>
+        <Image
+          source={require("../../assets/youtube_icon.png")}
+          style={{ width: 150, height: 150 }}
+        />
+      </TouchableOpacity>
+      <Button
+        title="오늘의 운동 완료!"
+        color={GREEN_MAIN}
+        radius={"lg"}
+        onPress={onDetailComplete}
+      />
     </StyledLayout>
   );
 }
 
 export default ExerciseDetail;
+
+const StyledInfo = styled(View)`
+  align-items: center;
+  gap: 16pxpx;
+`;
 
 const StyledMsgBox = styled(View)`
   background-color: #ffffff;
@@ -89,5 +105,8 @@ const StyledContainer = styled(View)`
 const StyledLayout = styled(View)`
   flex-direction: column;
   justify-content: space-between;
-  gap: 24px;
+  gap: 100px;
+  margin: 8px;
+  margin-top: 32px;
+  align-items: center;
 `;

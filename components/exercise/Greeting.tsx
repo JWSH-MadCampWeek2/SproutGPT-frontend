@@ -98,6 +98,8 @@ function Greeting({
 /* Typography/H5 */
 const StyledGreeting = styled(Text)`
   color: var(--Light-Text-Primary, rgba(0, 0, 0, 0.87));
+  font-family: Jalnan2;
+
   font-size: 24px;
   font-style: normal;
   font-weight: bold;

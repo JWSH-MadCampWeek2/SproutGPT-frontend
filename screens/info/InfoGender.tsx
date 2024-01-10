@@ -93,6 +93,7 @@ const StyledUXContainer = styled(View)`
 `;
 
 const StyledTitle = styled(Text)`
+  font-family: Jalnan2;
   font-size: 24px;
   font-style: normal;
   font-weight: bold;

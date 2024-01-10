@@ -47,11 +47,13 @@ const StyledMsgBox = styled(View)`
 `;
 
 const StyledName = styled(Text)`
+  font-family: Jalnan2;
   font-weight: bold;
   font-size: 24px;
 `;
 
 const StyledMsg = styled(Text)`
+  font-family: Jalnan2;
   font-size: 16x;
   line-height: 24px;
 `;
