@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, View, Alert } from "react-native";
 import { NextBtn } from "../../components/info/InfoBtn";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
@@ -12,8 +12,24 @@ export default function InfoAge({
   route: any;
 }) {
   const [age, setAge] = useState("");
-  const handleSubmit = async () => {
-    await AsyncStorage.setItem("user_age", age);
+  const onSubmit = async () => {
+    if (age !== "") {
+      await AsyncStorage.setItem("user_age", age);
+      navigation.navigate("InfoBody" as never, {
+        age: age,
+        ...route.params,
+      });
+    } else {
+      Alert.alert(
+        "안내",
+        "나이를 입력해주세요",
+        [{ text: "확인", onPress: () => {}, style: "cancel" }],
+        {
+          cancelable: true,
+          onDismiss: () => {},
+        }
+      );
+    }
   };
   return (
     <>
@@ -30,15 +46,7 @@ export default function InfoAge({
         </StyledInputContainer>
       </StyledUXContainer>
 
-      <NextBtn
-        onPress={() => {
-          handleSubmit();
-          navigation.navigate("InfoBody" as never, {
-            age: age,
-            ...route.params,
-          });
-        }}
-      />
+      <NextBtn onPress={onSubmit} />
     </>
   );
 }

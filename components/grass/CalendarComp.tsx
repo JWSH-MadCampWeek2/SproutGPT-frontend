@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FlatList } from "react-native";
 import { Calendar, DateData } from "react-native-calendars";
 import RecordItem from "./RecordItem";
-import { format } from "date-fns"; // Import date-fns for date formatting
 
 interface ExerciseData {
   day: string;

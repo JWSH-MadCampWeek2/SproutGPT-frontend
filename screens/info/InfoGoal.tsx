@@ -16,10 +16,15 @@ export default function InfoGoal({
 }) {
   const goalList = ["근육 증가", "체지방 감소", "현재 상태 유지"];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [goal, setGoal] = useState<string>("");
+  const [goal, setGoal] = useState<string>("근육 증가");
+  console.log(route.params);
 
   const handleSubmit = async () => {
     await AsyncStorage.setItem("user_goal", goal);
+    sendUserGoal({
+      exercise_goal: goal,
+      ...route.params,
+    });
     navigation.navigate("InfoLoad", { user_id: route.params.user_id });
   };
 
@@ -44,13 +49,13 @@ export default function InfoGoal({
       });
   };
 
-  useEffect(() => {
-    // This useEffect will be triggered whenever the 'goal' state changes
-    sendUserGoal({
-      exercise_goal: goal,
-      ...route.params,
-    });
-  }, [goal]); // Watch for changes in the 'goal' state
+  // useEffect(() => {
+  //   // This useEffect will be triggered whenever the 'goal' state changes
+  //   sendUserGoal({
+  //     exercise_goal: goal,
+  //     ...route.params,
+  //   });
+  // }, [goal]); // Watch for changes in the 'goal' state
 
   return (
     <>

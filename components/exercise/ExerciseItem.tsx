@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import { View, Linking, Text } from "react-native";
+import { View, Linking, Text, Modal } from "react-native";
 import { CheckBox } from "react-native-elements";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import styled from "styled-components/native";
+import ExerciseDetail from "./ExerciseDetail";
 
 function ExerciseItem({
   exerciseItem,
   onExerciseChecked,
 }: {
-  exerciseItem: { name: string; description: string; link: string };
+  exerciseItem: {
+    name: string;
+    description: string;
+    link: string;
+    target: string;
+  };
   onExerciseChecked: (name: string, isChecked: boolean) => void;
 }) {
   const [isChecked, setChecked] = useState(false);
-
-  const handleLongPress = () => {
-    if (exerciseItem.link) {
-      Linking.openURL(exerciseItem.link);
-    }
-  };
+  const [isDetail, setIsDetail] = useState(false);
+  console.log(exerciseItem);
 
   const toggleCheckbox = () => {
     setChecked(!isChecked);
@@ -26,17 +31,21 @@ function ExerciseItem({
 
   return (
     <StyledOuterContainer>
-      <StyledItemContainer>
-        <TouchableHighlight onLongPress={handleLongPress}>
-          <View>
-            <StyledTextContainer>
-              <StyledName>{exerciseItem.name}</StyledName>
-              <StyledDescription>{exerciseItem.description}</StyledDescription>
-            </StyledTextContainer>
-          </View>
-        </TouchableHighlight>
-        <CheckBox checked={isChecked} onPress={toggleCheckbox} />
+      <StyledItemContainer onPress={() => setIsDetail(true)}>
+        <Modal visible={isDetail} presentationStyle="formSheet">
+          <ExerciseDetail
+            exerciseItem={exerciseItem}
+            onDetailComplete={() => setIsDetail(false)}
+          />
+        </Modal>
+        <View>
+          <StyledTextContainer>
+            <StyledName>{exerciseItem.name}</StyledName>
+            <StyledDescription>{exerciseItem.description}</StyledDescription>
+          </StyledTextContainer>
+        </View>
       </StyledItemContainer>
+      <CheckBox checked={isChecked} onPress={toggleCheckbox} />
     </StyledOuterContainer>
   );
 }
@@ -53,9 +62,10 @@ const StyledOuterContainer = styled(View)`
   border-radius: 20px;
   border: 1px solid #c4c4c4;
   margin: 8px;
+  flex-direction: row;
 `;
 
-const StyledItemContainer = styled(View)`
+const StyledItemContainer = styled(TouchableOpacity)`
   flex-direction: row;
   margin: 12px;
   align-content: center;

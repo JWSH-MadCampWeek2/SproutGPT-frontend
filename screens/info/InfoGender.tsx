@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { ButtonGroup, Button } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,6 +18,15 @@ export default function InfoGender({ navigation }: { navigation: any }) {
       // Handle the error, e.g., show an error message to the user
     }
   };
+  useEffect(() => {
+    const getData = async () => {
+      const userGoalVal = await AsyncStorage.getItem("user_goal");
+      if (userGoalVal) {
+        navigation.navigate("InfoLoad" as never);
+      }
+    };
+    getData();
+  }, []);
   return (
     <>
       <StyledUXContainer>

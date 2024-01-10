@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View, Button, Text } from "react-native";
-import { Slider, Icon } from "@rneui/themed";
+import { Slider } from "@rneui/themed";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import styled from "styled-components/native";
-import { getCurrentDate } from "../grass/CalendarComp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { localPort } from "../../utils/constants";
+import { getCurrentDate } from "../grass/CalendarComp";
+import BackButton from "../BackButton";
 
 function Record({
   exerciseList,
@@ -24,8 +25,8 @@ function Record({
     fetchUserId();
   }, []);
 
-  // const today = getCurrentDate();
-  const today = "2024-01-25";
+  const today = getCurrentDate();
+  // const today = "2024-01-10";
 
   const onPress = async () => {
     try {
@@ -60,7 +61,6 @@ function Record({
         const scoreData = await scoreResponse.json();
         console.log("Score response:", scoreData);
       }
-
       onSubmit();
     } catch (error) {
       console.error("Error sending data to server:", error);
@@ -88,6 +88,7 @@ function Record({
 
   return (
     <StyledContainer>
+      <BackButton onPress={onSubmit} />
       <Slider
         value={value}
         onValueChange={setValue}

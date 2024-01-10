@@ -37,9 +37,12 @@ export default function InfoLevel({
       </StyledUXContainer>
 
       <NextBtn
-        onPress={() => {
-          handleSubmit();
+        onPress={async () => {
+          await handleSubmit();
+          const userId = await AsyncStorage.getItem("user_id");
+
           navigation.navigate("InfoTarget" as never, {
+            user_id: userId,
             difficulty: level,
             ...route.params,
           });

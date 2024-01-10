@@ -1,26 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TextInput } from "react-native";
 import { ButtonGroup, Button } from "@rneui/themed";
 import { ConfirmBtn } from "../../components/info/InfoBtn";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
+import { localPort } from "../../utils/constants";
+import { useNavigation } from "@react-navigation/native";
+import BackButton from "../../components/BackButton";
+import { LogoutBtn } from "../../components/exercise/Buttons";
 
-function Setting({ onSettingComplete }: { onSettingComplete: () => void }) {
+async function sendUserInfo(userInfo: {
+  user_id: string;
+  gender: string;
+  age: string;
+  height: string;
+  weight: string;
+}) {
+  console.log(userInfo);
+  await fetch(`${localPort}/info`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userInfo),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Received data:", data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+
+  try {
+    await AsyncStorage.setItem("user_gender", userInfo.gender);
+    await AsyncStorage.setItem("user_age", userInfo.age);
+    await AsyncStorage.setItem("user_height", userInfo.height);
+    await AsyncStorage.setItem("user_weight", userInfo.weight);
+  } catch (error) {
+    console.error("Error storing user info to AsyncStorage:", error);
+    // Handle the error, e.g., show an error message to the user
+  }
+}
+
+function Setting({
+  onSettingComplete,
+  onSettingBack,
+  id,
+  userGender,
+  userAge,
+  userHeight,
+  userWeight,
+}: {
+  onSettingComplete: () => void;
+  onSettingBack: () => void;
+  id: string;
+  userGender: string;
+  userAge: string;
+  userHeight: string;
+  userWeight: string;
+}) {
+  const [userId, setUserId] = useState(id);
   // gender
   const genderList = ["남자", "여자"];
   const [selectedGender, setSelectedGender] = useState(0);
-  const [gender, setGender] = useState("남자");
-
+  const [gender, setGender] = useState(userGender);
   // age
-  const [age, setAge] = useState("");
-
+  const [age, setAge] = useState(userAge);
   // body
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState(userHeight);
+  const [weight, setWeight] = useState(userWeight);
 
   return (
     <StyledContainer>
       <>
+        <BackButton onPress={onSettingBack} />
         <StyledTitle>성별을 입력해주세요</StyledTitle>
         <ButtonGroup
           buttons={genderList}
@@ -70,7 +124,13 @@ function Setting({ onSettingComplete }: { onSettingComplete: () => void }) {
         </StyledInputContainer>
       </StyledInputsContainer>
 
-      <ConfirmBtn onPress={onSettingComplete} />
+      <ConfirmBtn
+        onPress={() => {
+          sendUserInfo({ user_id: userId, gender, age, height, weight });
+          onSettingComplete();
+        }}
+      />
+      <LogoutBtn />
     </StyledContainer>
   );
 }

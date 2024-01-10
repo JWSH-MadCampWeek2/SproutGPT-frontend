@@ -63,7 +63,7 @@ export default function RankMain() {
       <FlatList
         data={data}
         renderItem={({ item }) => <RankItem rankItem={item} />}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.user_id}
       />
     </View>
   );

@@ -9,13 +9,19 @@ function Home() {
 
   useEffect(() => {
     console.log("Component rendered!");
+
     const getData = async () => {
       const userGoalVal = await AsyncStorage.getItem("user_goal");
       console.log("user_goal value:", userGoalVal);
-      if (userGoalVal) {
-        setIsSignedUp(true);
-      }
+
+      // Simulate a delay of 1000 milliseconds (1 second)
+      setTimeout(() => {
+        if (userGoalVal) {
+          setIsSignedUp(true);
+        }
+      }, 1000);
     };
+
     getData();
   }, []);
 
@@ -23,11 +29,7 @@ function Home() {
 
   return (
     <NavigationContainer>
-      {isSignedUp ? (
-        <InfoStack initialRouteName="InfoGender" />
-      ) : (
-        <InfoStack initialRouteName="InfoLoad" />
-      )}
+      <InfoStack initialRouteName={isSignedUp ? "InfoLoad" : "InfoGender"} />
     </NavigationContainer>
   );
 }

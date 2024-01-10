@@ -1,18 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, FlatList, StyleSheet, Modal } from "react-native";
+import { SafeAreaView, FlatList, View, Modal, Alert } from "react-native";
 import { Button } from "react-native-elements";
 import ExerciseItem from "../../components/exercise/ExerciseItem";
 import Greeting from "../../components/exercise/Greeting";
-import { ChangeGoalBtn, RetryBtn } from "../../components/exercise/RecmBtn";
+import { ChangeGoalBtn, RetryBtn } from "../../components/exercise/Buttons";
 import Record from "../../components/exercise/Record";
-
-const DATA = [
-  { id: "1", name: "스쿼트", description: "근육 1과 근육 2의 발달에 좋습니다" },
-  { id: "2", name: "데드리프트", description: "코어 근육의 발달에 좋습니다." },
-  { id: "3", name: "트레드밀 러닝", description: "체력 강화에 좋습니다." },
-  { id: "4", name: "푸시업", description: "코어 근육의 발달에 좋습니다." },
-];
+import Comment from "./Comment";
+import styled from "styled-components/native";
 
 export default function ExerciseMain({
   navigation,
@@ -25,9 +20,11 @@ export default function ExerciseMain({
   const [userName, setUserName] = useState("");
   const [userPhoto, setUserPhoto] = useState("");
   const [recommend, setRecommend] = useState<
-    { name: string; description: string; link: string }[]
+    { name: string; description: string; link: string; target: string }[]
   >(route.params.recommend);
+  const [comment, setComment] = useState(route.params.comment);
   const [isRecording, setIsRecording] = useState(false);
+  const [isComment, setIsComment] = useState(false);
   const [checkedExercises, setCheckedExercises] = useState<string[]>([]);
 
   useEffect(() => {
@@ -60,21 +57,40 @@ export default function ExerciseMain({
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Greeting
-        userName={userName}
-        navigation={navigation}
-        userPhoto={userPhoto}
-      />
+    <StyledContainer>
+      <Greeting userName={userName} userPhoto={userPhoto} />
       <Button
         title="오운완!"
         type="outline"
-        onPress={() => setIsRecording(true)}
+        onPress={() =>
+          checkedExercises.length > 0
+            ? setIsRecording(true)
+            : Alert.alert(
+                "안내",
+                "오늘 완료한 운동이 없어요!",
+                [{ text: "확인", onPress: () => {}, style: "cancel" }],
+                {
+                  cancelable: true,
+                  onDismiss: () => {},
+                }
+              )
+        }
       />
       <Modal visible={isRecording} presentationStyle="formSheet">
         <Record
           exerciseList={checkedExercises}
           onSubmit={() => setIsRecording(false)}
+        />
+      </Modal>
+      <Button
+        title="AI의 코멘트 확인하기!"
+        type="outline"
+        onPress={() => setIsComment(true)}
+      />
+      <Modal visible={isComment} presentationStyle="formSheet">
+        <Comment
+          onCommentComplete={() => setIsComment(false)}
+          commentData={comment}
         />
       </Modal>
       <FlatList
@@ -89,13 +105,8 @@ export default function ExerciseMain({
       />
       <ChangeGoalBtn />
       <RetryBtn />
-    </SafeAreaView>
+    </StyledContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
+const StyledContainer = styled(View)``;

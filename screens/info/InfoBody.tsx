@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
+import { Text, View, StyleSheet, TextInput, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
 
@@ -39,9 +39,39 @@ export default function InfoBody({
 }) {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
-  const handleSubmit = async () => {
-    await AsyncStorage.setItem("user_height", height);
-    await AsyncStorage.setItem("user_weight", weight);
+  const onSubmit = async () => {
+    if (height == "") {
+      Alert.alert(
+        "안내",
+        "키를 입력해주세요",
+        [{ text: "확인", onPress: () => {}, style: "cancel" }],
+        {
+          cancelable: true,
+          onDismiss: () => {},
+        }
+      );
+    } else if (weight == "") {
+      Alert.alert(
+        "안내",
+        "몸무게를 입력해주세요",
+        [{ text: "확인", onPress: () => {}, style: "cancel" }],
+        {
+          cancelable: true,
+          onDismiss: () => {},
+        }
+      );
+    } else {
+      sendUserInfo({
+        ...route.params,
+        height: height,
+        weight: weight,
+      });
+      await AsyncStorage.setItem("user_height", height);
+      await AsyncStorage.setItem("user_weight", weight);
+      navigation.navigate("InfoLevel" as never, {
+        user_id: route.params.user_id,
+      });
+    }
   };
 
   return (
@@ -70,19 +100,7 @@ export default function InfoBody({
         </StyledInputsContainer>
       </StyledUXContainer>
 
-      <NextBtn
-        onPress={() => {
-          sendUserInfo({
-            ...route.params,
-            height: height,
-            weight: weight,
-          });
-          handleSubmit();
-          navigation.navigate("InfoLevel" as never, {
-            user_id: route.params.user_id,
-          });
-        }}
-      />
+      <NextBtn onPress={onSubmit} />
     </>
   );
 }

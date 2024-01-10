@@ -8,13 +8,16 @@ import { useNavigation } from "@react-navigation/native";
 function InfoLoad() {
   const navigation = useNavigation();
   const [recommendations, setRecommendations] =
-    useState<{ name: string; description: string; link: string }[]>();
+    useState<
+      { name: string; description: string; link: string; target: string }[]
+    >();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Correct usage of AsyncStorage.getItem with await
         const userId = await AsyncStorage.getItem("user_id");
+        console.log(`userId in InfoLoad: ${userId}`);
 
         if (userId) {
           const response = await fetch(`${localPort}/recommend`, {
@@ -28,7 +31,7 @@ function InfoLoad() {
           const data = await response.json();
           console.log("Received recommend data:", data);
 
-          if (data && data.recommended_exercises) {
+          if (data && data.recommended_exercises && data.comment) {
             console.log(
               "Recommendations available:",
               data.recommended_exercises
@@ -41,7 +44,9 @@ function InfoLoad() {
                   name: recItem.name,
                   description: recItem.description,
                   link: recItem.link,
+                  target: recItem.target,
                 })),
+                comment: data.comment,
               },
             });
           } else {

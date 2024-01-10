@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Alert } from "react-native";
 import { ButtonGroup } from "@rneui/themed";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styled from "styled-components/native";
@@ -15,10 +15,33 @@ export default function InfoTarget({
 }) {
   const [selectedIndexes, setSelectedIndexes] = useState<number[]>([]);
   const [target, setTarget] = useState<string[]>([]);
-  const targetList = ["등", "어깨", "복근", "하체", "팔", "가슴", "상관 없음"];
-  const handleSubmit = async () => {
-    await AsyncStorage.setItem("user_target", JSON.stringify(target));
+  const targetList = ["등", "어깨", "복근", "하체", "팔", "가슴"];
+
+  const onSelect = (value: number[]) => {
+    setSelectedIndexes(value);
+    const selectedTarget = value.map((index: number) => targetList[index]);
+    setTarget(selectedTarget);
   };
+  const onSubmit = async () => {
+    if (target.length > 0) {
+      await AsyncStorage.setItem("user_target", JSON.stringify(target));
+      navigation.navigate("InfoGoal", {
+        target: target,
+        ...route.params,
+      });
+    } else {
+      Alert.alert(
+        "안내",
+        "운동하고 싶은 부위를 선택해주세요",
+        [{ text: "확인", onPress: () => {}, style: "cancel" }],
+        {
+          cancelable: true,
+          onDismiss: () => {},
+        }
+      );
+    }
+  };
+  console.log(route.params);
 
   return (
     <>
@@ -29,26 +52,12 @@ export default function InfoTarget({
           vertical
           selectMultiple
           selectedIndexes={selectedIndexes}
-          onPress={(value) => {
-            setSelectedIndexes(value);
-            const selectedTarget = value.map(
-              (index: number) => targetList[index]
-            );
-            setTarget(selectedTarget);
-          }}
+          onPress={onSelect}
           containerStyle={{ marginBottom: 20 }}
         />
       </StyledUXContainer>
 
-      <NextBtn
-        onPress={() => {
-          handleSubmit();
-          navigation.navigate("InfoGoal", {
-            target: target,
-            ...route.params,
-          });
-        }}
-      />
+      <NextBtn onPress={onSubmit} />
     </>
   );
 }

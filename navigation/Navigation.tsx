@@ -12,6 +12,7 @@ import InfoGoal from "../screens/info/InfoGoal";
 import InfoLevel from "../screens/info/InfoLevel";
 import InfoTarget from "../screens/info/InfoTarget";
 import InfoLoad from "../screens/info/InfoLoad";
+import App from "../App";
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -34,11 +35,12 @@ export function InfoStack({ initialRouteName }: { initialRouteName: string }) {
 
       <Stack.Screen name="InfoLoad" component={InfoLoad} />
       <Stack.Screen name="BottomStack" component={BottomStack} />
+      <Stack.Screen name="App" component={App} />
     </Stack.Navigator>
   );
 }
 
-export function BottomStack({ route }: { route: any }) {
+export function BottomStack({ route }: { route?: any }) {
   return (
     <BottomTab.Navigator initialRouteName="ExerciseMain">
       <BottomTab.Screen name="ExerciseMain" component={ExerciseMain} />
