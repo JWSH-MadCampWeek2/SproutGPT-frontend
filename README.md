@@ -124,3 +124,6 @@ Madcamp Week2 1분반
 ### 기술 설명
 
 - 사용자정보를 수정하면, 이를 DB에 반영하도록 구현했습니다.
+
+
+Backend : https://github.com/JWSH-MadCampWeek2/week2-backend.git
