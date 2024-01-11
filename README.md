@@ -1,6 +1,6 @@
 # Sprout GPT
 
-![2.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/f6cb388f-3934-47d6-9928-26d2e10eb0fc/067f0828-0849-4c57-82b4-de735a04c247/2.png)
+![2](https://github.com/JWSH-MadCampWeek2/week2-frontend/assets/79096116/6c8e78f9-f79e-4f20-9121-1db9e1eaa904)
 
 # Sprout GPT
 
