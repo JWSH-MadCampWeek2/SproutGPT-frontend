@@ -33,7 +33,7 @@ function Record({
   }, []);
 
   const today = getCurrentDate();
-  // const today = "2024-01-10";
+  // const today = "2024-01-11";
 
   const onPress = async () => {
     try {

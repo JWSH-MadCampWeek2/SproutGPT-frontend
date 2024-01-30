@@ -10,7 +10,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isFontLoaded, setIsFontLoaded] = useState(false);
-
+  // AsyncStorage.clear();
   useEffect(() => {
     const loadFont = async () => {
       await Font.loadAsync({
@@ -22,6 +22,11 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (isFontLoaded) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 3000);
+    }
     const getData = async () => {
       const userIdVal = await AsyncStorage.getItem("user_id");
       if (userIdVal) {
@@ -29,14 +34,6 @@ function App() {
       }
     };
     getData();
-  }, []);
-
-  useEffect(() => {
-    if (isFontLoaded) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 3000);
-    }
   }, [isFontLoaded]);
 
   if (!isFontLoaded) {

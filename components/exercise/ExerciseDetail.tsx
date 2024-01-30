@@ -3,12 +3,7 @@ import { View, Linking, Text, Button, Image } from "react-native";
 import styled from "styled-components/native";
 import YoutubeButton from "./YoutubeButton";
 import { SPROUT_GPT_PROFILE } from "../../utils/constants";
-import {
-  GREEN_LIGHT,
-  GREEN_MAIN,
-  ORANGE_MAIN,
-  GREEN_DEEP,
-} from "../../utils/colors";
+import { GREEN_MAIN } from "../../utils/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 function ExerciseDetail({
@@ -54,9 +49,9 @@ function ExerciseDetail({
         />
       </TouchableOpacity>
       <Button
-        title="오늘의 운동 완료!"
+        title="뒤로 가기"
         color={GREEN_MAIN}
-        radius={"lg"}
+        // radius={"lg"}
         onPress={onDetailComplete}
       />
     </StyledLayout>
